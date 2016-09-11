@@ -48,4 +48,17 @@ public class AminoAcid {
 	public void setBackboneC(Vector3D backboneC) {
 		this.backboneC = backboneC;
 	}
+	public AminoAcid(String rSequence, String rChain, String rName, Vector3D backboneN, Vector3D backboneCA,
+			Vector3D backboneC) {
+		super();
+		this.rSequence = rSequence;
+		this.rChain = rChain;
+		this.rName = rName;
+		this.backboneN = backboneN;
+		this.backboneCA = backboneCA;
+		this.backboneC = backboneC;
+	}
+	public AminoAcid() {
+		super();
+	}
 }

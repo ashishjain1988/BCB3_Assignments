@@ -17,12 +17,13 @@ public class MainClass
 	public static List<String> atomNames = Arrays.asList("N","CA","C");
     public static void main( String[] args ) throws IOException
     {
-    	String rName,rChain,rSequence = "";
+    	String rName, rChain, rSequence;
+    	rName = rChain = rSequence = "";
         List<AminoAcid> aminoAcids = new ArrayList<AminoAcid>();
-        Map<String, Vector3D> aminoAcidsAtoms = new HashMap<String, Vector3D>();
+        Map<String, Vector3D> aminoAcidBackbone = new HashMap<String, Vector3D>();
     	
         BufferedReader br = new BufferedReader(new FileReader(""));
-        PrintWriter pw = new PrintWriter("");        
+        PrintWriter pw = new PrintWriter("output.txt");        
         String line = br.readLine();
         while(line != null)
         {
@@ -35,7 +36,19 @@ public class MainClass
         			String resName = line.substring(17,20);
         			String resChain = line.substring(21,22);
         			String resSequence = line.substring(22,26);
-        			//String
+        			Vector3D coordinate = new Vector3D(Double.valueOf(line.substring(31,38).trim()), Double.valueOf(line.substring(38,46).trim()), Double.valueOf(line.substring(46,54).trim()));
+        			if(!(resName.equals(rName) && resChain.equals(rChain) && resSequence.equals(rSequence)))
+        			{
+        				rName = resName;
+        				rChain = resChain;
+        				rSequence = resSequence;
+        			}
+        			pw.println(resSequence+"\t"+atomName+"\t"+coordinate.getX()+"\t"+coordinate.getY()+"\t"+coordinate.getZ());
+        			aminoAcidBackbone.put(atomName, coordinate);
+        			if(aminoAcidBackbone.size() == 3)
+        			{
+        				aminoAcids.add(new AminoAcid(rSequence, rChain, rName, aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C")));
+        			}
         		}
         	}
         	line = br.readLine();
@@ -59,5 +72,14 @@ public class MainClass
 			a = -a;
 		}
 		return Math.toDegrees(a);
+    }
+    
+    public static void CalculateMeanAndSDofAngles(List<AminoAcid> aminoAcids, PrintWriter pw)
+    {
+    	for(AminoAcid aa : aminoAcids)
+    	{
+    		
+    		
+    	}
     }
 }
