@@ -76,9 +76,14 @@ public class MainClass
     
     public static void CalculateMeanAndSDofAngles(List<AminoAcid> aminoAcids, PrintWriter pw)
     {
-    	for(AminoAcid aa : aminoAcids)
+    	List<Vector3D> bondLengthsNCA = null;
+    	List<Vector3D> bondLengthsCAC = null;
+    	List<Vector3D> bondLengthsCAN = null;
+    	
+    	for(int i=0;i<aminoAcids.size()-1;i++)
     	{
-    		
+    		AminoAcid aa = aminoAcids.get(i);
+    		Vector3D bondLengthNCA = aa.getBackboneN().subtract(aa.getBackboneCA());
     		
     	}
     }
