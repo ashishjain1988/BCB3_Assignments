@@ -10,6 +10,18 @@
   <name>BCB569</name>
   <url>http://maven.apache.org</url>
 
+	<repositories>
+    <repository>
+      <id>oss.sonatype.org-snapshot</id>
+      <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -40,5 +52,10 @@
         <artifactId>javaFX</artifactId>
         <version>2.2</version>
     </dependency>-->
+    <dependency>
+        <groupId>org.biojava</groupId>
+        <artifactId>biojava-core</artifactId>
+        <version>4.2.4</version>
+    </dependency>
   </dependencies>
 </project>
