@@ -20,7 +20,7 @@ public class MainClass
         List<AminoAcid> aminoAcids = new ArrayList<AminoAcid>();
         Map<String, Vector> aminoAcidBackbone = new HashMap<String, Vector>();
     	
-        BufferedReader br = new BufferedReader(new FileReader("/Users/jain/Desktop/Assignment1/2GB1.pdb"));
+        BufferedReader br = new BufferedReader(new FileReader("/home/jain/BitBucket_Code/python-scripts/2GB1.pdb"));
         PrintWriter pw = new PrintWriter("output.txt");        
         String line = br.readLine();
         while(line != null)
@@ -48,6 +48,7 @@ public class MainClass
         				if(!aminoAcids.contains(new AminoAcid(rSequence, rChain, rName, aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C"))))
         				{
         					aminoAcids.add(new AminoAcid(rSequence, rChain, rName, aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C")));
+        					aminoAcidBackbone = new HashMap<String, Vector>();
         				}
         			}
         		}
@@ -89,9 +90,9 @@ public class MainClass
     		bondLengthsCN.add(bondLengthCN);
     		bondLengthsNCA.add(bondLengthNCA);
     		
-    		Double bondAngleNCAC = Vector.angle1(aa.getBackboneN().subtract(aa.getBackboneCA()), aa.getBackboneCA().subtract(aa.getBackboneC()));
-    		Double bondAngleCACN = Vector.angle1(aa.getBackboneCA().subtract(aa.getBackboneC()), aa.getBackboneC().subtract(aa_next.getBackboneN()));
-    		Double bondAngleCNCA = Vector.angle1(aa.getBackboneC().subtract(aa_next.getBackboneN()), aa_next.getBackboneN().subtract(aa_next.getBackboneCA()));
+    		Double bondAngleNCAC = Vector.angle(aa.getBackboneN().subtract(aa.getBackboneCA()), aa.getBackboneCA().subtract(aa.getBackboneC()));
+    		Double bondAngleCACN = Vector.angle(aa.getBackboneCA().subtract(aa.getBackboneC()), aa.getBackboneC().subtract(aa_next.getBackboneN()));
+    		Double bondAngleCNCA = Vector.angle(aa.getBackboneC().subtract(aa_next.getBackboneN()), aa_next.getBackboneN().subtract(aa_next.getBackboneCA()));
     		
     		bondAnglesNCAC.add(bondAngleNCAC);
     		bondAnglesCACN.add(bondAngleCACN);
@@ -150,12 +151,12 @@ public class MainClass
     	Vector v12 = p1.subtract(p2);
     	Vector v0 = v12.crossProduct(v01);
 		Vector v3 = v12.crossProduct(v32);
-		Double a = Vector.angle1(v0,v3);
-		/*if(v0.crossProduct(v3).dotProduct(v12) > 0)
+		Double a = Vector.angle(v0,v3);
+		if(v0.crossProduct(v3).dotProduct(v12) > 0)
 		{
 			a = -a;
-		}*/
-		return Math.toDegrees(a);
+		}
+		return a;
     }
     
     

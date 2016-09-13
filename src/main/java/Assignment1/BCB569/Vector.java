@@ -55,7 +55,7 @@ public class Vector {
 	
     public static double angle(Vector v1, Vector v2) {
     	double dot = v1.dotProduct(v2);
-    	return FastMath.acos(dot/(v1.length()*v2.length()));
+    	return Math.toDegrees(FastMath.acos(dot/(v1.length()*v2.length())));
     }
     
     public static double angle1(Vector v1, Vector v2) {
@@ -76,6 +76,12 @@ public class Vector {
         return FastMath.acos(dot / normProduct);
 
     }
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return getX() +" "+ getY()+" "+getZ();
+	}
 	
 	
 }
