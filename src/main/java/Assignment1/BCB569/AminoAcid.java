@@ -1,15 +1,13 @@
 package Assignment1.BCB569;
 
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-
 public class AminoAcid {
 
 	String rSequence;
 	String rChain;
 	String rName;
-	Vector3D backboneN;
-	Vector3D backboneCA;
-	Vector3D backboneC;
+	Vector backboneN;
+	Vector backboneCA;
+	Vector backboneC;
 	
 	
 	public String getrSequence() {
@@ -30,26 +28,26 @@ public class AminoAcid {
 	public void setrName(String rName) {
 		this.rName = rName;
 	}
-	public Vector3D getBackboneN() {
+	public Vector getBackboneN() {
 		return backboneN;
 	}
-	public void setBackboneN(Vector3D backboneN) {
+	public void setBackboneN(Vector backboneN) {
 		this.backboneN = backboneN;
 	}
-	public Vector3D getBackboneCA() {
+	public Vector getBackboneCA() {
 		return backboneCA;
 	}
-	public void setBackboneCA(Vector3D backboneCA) {
+	public void setBackboneCA(Vector backboneCA) {
 		this.backboneCA = backboneCA;
 	}
-	public Vector3D getBackboneC() {
+	public Vector getBackboneC() {
 		return backboneC;
 	}
-	public void setBackboneC(Vector3D backboneC) {
+	public void setBackboneC(Vector backboneC) {
 		this.backboneC = backboneC;
 	}
-	public AminoAcid(String rSequence, String rChain, String rName, Vector3D backboneN, Vector3D backboneCA,
-			Vector3D backboneC) {
+	public AminoAcid(String rSequence, String rChain, String rName, Vector backboneN, Vector backboneCA,
+			Vector backboneC) {
 		super();
 		this.rSequence = rSequence;
 		this.rChain = rChain;
