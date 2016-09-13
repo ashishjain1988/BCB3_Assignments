@@ -20,7 +20,7 @@ public class MainClass
         List<AminoAcid> aminoAcids = new ArrayList<AminoAcid>();
         Map<String, Vector> aminoAcidBackbone = new HashMap<String, Vector>();
     	
-        BufferedReader br = new BufferedReader(new FileReader(""));
+        BufferedReader br = new BufferedReader(new FileReader("/Users/jain/Desktop/Assignment1/2GB1.pdb"));
         PrintWriter pw = new PrintWriter("output.txt");        
         String line = br.readLine();
         while(line != null)
@@ -45,13 +45,16 @@ public class MainClass
         			aminoAcidBackbone.put(atomName, coordinate);
         			if(aminoAcidBackbone.size() == 3)
         			{
-        				aminoAcids.add(new AminoAcid(rSequence, rChain, rName, aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C")));
+        				if(!aminoAcids.contains(new AminoAcid(rSequence, rChain, rName, aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C"))))
+        				{
+        					aminoAcids.add(new AminoAcid(rSequence, rChain, rName, aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C")));
+        				}
         			}
         		}
         	}
         	line = br.readLine();
         }
-        
+        System.out.println(aminoAcids.size());
         CalculateMeanAndSDofAngles(aminoAcids, pw);
         AminoAcid aa29 = aminoAcids.get(28);
         AminoAcid aa30 = aminoAcids.get(29);
@@ -86,9 +89,9 @@ public class MainClass
     		bondLengthsCN.add(bondLengthCN);
     		bondLengthsNCA.add(bondLengthNCA);
     		
-    		Double bondAngleNCAC = Vector.angle(aa.getBackboneN().subtract(aa.getBackboneCA()), aa.getBackboneCA().subtract(aa.getBackboneC()));
-    		Double bondAngleCACN = Vector.angle(aa.getBackboneCA().subtract(aa.getBackboneC()), aa.getBackboneC().subtract(aa_next.getBackboneN()));
-    		Double bondAngleCNCA = Vector.angle(aa.getBackboneC().subtract(aa_next.getBackboneN()), aa_next.getBackboneN().subtract(aa_next.getBackboneCA()));
+    		Double bondAngleNCAC = Vector.angle1(aa.getBackboneN().subtract(aa.getBackboneCA()), aa.getBackboneCA().subtract(aa.getBackboneC()));
+    		Double bondAngleCACN = Vector.angle1(aa.getBackboneCA().subtract(aa.getBackboneC()), aa.getBackboneC().subtract(aa_next.getBackboneN()));
+    		Double bondAngleCNCA = Vector.angle1(aa.getBackboneC().subtract(aa_next.getBackboneN()), aa_next.getBackboneN().subtract(aa_next.getBackboneCA()));
     		
     		bondAnglesNCAC.add(bondAngleNCAC);
     		bondAnglesCACN.add(bondAngleCACN);
@@ -97,14 +100,26 @@ public class MainClass
     		distanceCA.add(aa.getBackboneCA().distance(aa_next.getBackboneCA()));
     	}
     	
+    	AminoAcid aa = aminoAcids.get(aminoAcids.size()-1);
+    	Double bondLengthNCA = aa.getBackboneN().distance(aa.getBackboneCA());
+		Double bondLengthCAC = aa.getBackboneCA().distance(aa.getBackboneC());
+		bondLengthsCAC.add(bondLengthCAC);
+		bondLengthsNCA.add(bondLengthNCA);
+		Double bondAngleNCAC = Vector.angle(aa.getBackboneN().subtract(aa.getBackboneCA()), aa.getBackboneCA().subtract(aa.getBackboneC()));
+		bondAnglesNCAC.add(bondAngleNCAC);
+		
+		Double sum = 0d;
+    	for(Double d:bondLengthsNCA)
+    	{
+    		sum +=d;
+    	}
+		System.out.println(sum+","+bondLengthsNCA.size());
     	pw.println("The Mean of Bond Lengths Ni-CAi, CAi-Ci, Ci-N(i+1) "+Mean(bondLengthsNCA) +","+Mean(bondLengthsCAC)+","+Mean(bondLengthsCN));
     	pw.println("The Standard Deviation of Bond Lengths Ni-CAi, CAi-Ci, Ci-N(i+1) "+SDV(bondLengthsNCA) +","+SDV(bondLengthsCAC)+","+SDV(bondLengthsCN));
     	pw.println("The Mean of Bond Angles Ni-CAi-Ci, CAi-Ci-N(i+1), Ci-N(i+1)-CA(i+1) "+Mean(bondAnglesNCAC) +","+Mean(bondAnglesCACN)+","+Mean(bondAnglesCNCA));
     	pw.println("The Standard Deviation of Bond Angles Ni-CAi-Ci, CAi-Ci-N(i+1), Ci-N(i+1)-CA(i+1) "+SDV(bondAnglesNCAC) +","+SDV(bondAnglesCACN)+","+SDV(bondAnglesCNCA));
     	pw.println("The Mean of distance between CAi-CA(i+1) "+Mean(distanceCA));
     	pw.println("The Standard Deviation of of distance between CAi-CA(i+1) "+SDV(distanceCA));
-    	
-    	
     }
     
     public static Double Mean(List<Double> list)
@@ -135,11 +150,11 @@ public class MainClass
     	Vector v12 = p1.subtract(p2);
     	Vector v0 = v12.crossProduct(v01);
 		Vector v3 = v12.crossProduct(v32);
-		Double a = Vector.angle(v0,v3);
-		if(v0.crossProduct(v3).dotProduct(v12) > 0)
+		Double a = Vector.angle1(v0,v3);
+		/*if(v0.crossProduct(v3).dotProduct(v12) > 0)
 		{
 			a = -a;
-		}
+		}*/
 		return Math.toDegrees(a);
     }
     

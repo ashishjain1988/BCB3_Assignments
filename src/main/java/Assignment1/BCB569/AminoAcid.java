@@ -1,6 +1,6 @@
 package Assignment1.BCB569;
 
-public class AminoAcid {
+public class AminoAcid implements Comparable<AminoAcid>{
 
 	String rSequence;
 	String rChain;
@@ -58,5 +58,25 @@ public class AminoAcid {
 	}
 	public AminoAcid() {
 		super();
+	}
+	public int compareTo(AminoAcid o) {
+		if(rSequence.equals(o.getrSequence()) && rChain.equals(o.getrChain()) && rName.equals(o.getrName()))
+		{
+			return 0;
+		}else
+		{
+			return 1;
+		}
+	}
+	@Override
+	public boolean equals(Object obj) {
+		AminoAcid o = (AminoAcid) obj;
+		if(rSequence.equals(o.getrSequence()) && rChain.equals(o.getrChain()) && rName.equals(o.getrName()))
+		{
+			return true;
+		}else
+		{
+			return false;
+		}
 	}
 }
