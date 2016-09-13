@@ -79,4 +79,12 @@ public class AminoAcid implements Comparable<AminoAcid>{
 			return false;
 		}
 	}
+	@Override
+	public String toString() {
+		
+		return rSequence +" "+rName+" "+rChain +" "+backboneC+" "+backboneCA+" "+backboneN;
+				
+	}
+	
+	
 }

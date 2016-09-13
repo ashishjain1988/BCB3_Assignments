@@ -55,12 +55,11 @@ public class MainClass
         	}
         	line = br.readLine();
         }
-        System.out.println(aminoAcids.size());
         CalculateMeanAndSDofAngles(aminoAcids, pw);
         AminoAcid aa29 = aminoAcids.get(28);
         AminoAcid aa30 = aminoAcids.get(29);
         AminoAcid aa31 = aminoAcids.get(30);
-        pw.println("The Phi, Psi and Omega angles of 30th Residue is "+phiAngle(aa29, aa30)+","+psiAngle(aa30, aa31)+","+omegaAngle(aa30, aa31));
+        pw.println("The Phi, Psi and Omega angles of 30th Residue is "+phiAngle(aa29, aa30)+","+psiAngle(aa30, aa31)+","+omegaAngle(aa30, aa29));
         
         br.close();
         pw.close();
@@ -114,7 +113,6 @@ public class MainClass
     	{
     		sum +=d;
     	}
-		System.out.println(sum+","+bondLengthsNCA.size());
     	pw.println("The Mean of Bond Lengths Ni-CAi, CAi-Ci, Ci-N(i+1) "+Mean(bondLengthsNCA) +","+Mean(bondLengthsCAC)+","+Mean(bondLengthsCN));
     	pw.println("The Standard Deviation of Bond Lengths Ni-CAi, CAi-Ci, Ci-N(i+1) "+SDV(bondLengthsNCA) +","+SDV(bondLengthsCAC)+","+SDV(bondLengthsCN));
     	pw.println("The Mean of Bond Angles Ni-CAi-Ci, CAi-Ci-N(i+1), Ci-N(i+1)-CA(i+1) "+Mean(bondAnglesNCAC) +","+Mean(bondAnglesCACN)+","+Mean(bondAnglesCNCA));
@@ -147,7 +145,7 @@ public class MainClass
     public static Double getTorsionalAngle(Vector p0,Vector p1,Vector p2,Vector p3)
     {
     	Vector v01 = p0.subtract(p1);
-    	Vector v32 = p2.subtract(p3);
+    	Vector v32 = p3.subtract(p2);
     	Vector v12 = p1.subtract(p2);
     	Vector v0 = v12.crossProduct(v01);
 		Vector v3 = v12.crossProduct(v32);
