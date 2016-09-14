@@ -41,7 +41,8 @@ public class MainClass
         }
         br.close();
         line = "";
-        pw.println("");
+        pw.println("Question 1:");
+        pw.println("Residue Sequence\tAtom Name\tCoordinate X\tCoordinate Y\tCoordinate Z");
         for(int i=0;i<lineInPDBFile.size();i++)
         {
         	line = lineInPDBFile.get(i);
@@ -99,12 +100,15 @@ public class MainClass
         	}
         }
         //System.out.println(aminoAcids.size());
+        pw.println("Question 2:");
         CalculateMeanAndSDofAngles(aminoAcids, pw);
         AminoAcid aa29 = aminoAcids.get(28);
         AminoAcid aa30 = aminoAcids.get(29);
         AminoAcid aa31 = aminoAcids.get(30);
         //Question 3:
+        pw.println("Question 3:");
         pw.println("The Phi, Psi and Omega angles of 30th Residue is "+phiAngle(aa29, aa30)+","+psiAngle(aa30, aa31)+","+omegaAngle(aa30, aa29));
+        pw.println("Question 5:");
         calculateSideChainTorsionAngles(aminoAcids, pw);
        
         pw.close();
@@ -127,21 +131,14 @@ public class MainClass
     	{
     		AminoAcid aa = aminoAcids.get(i);
     		AminoAcid aa_next = aminoAcids.get(i+1);
-    		Double bondLengthNCA = aa.getBackboneN().distance(aa.getBackboneCA());
-    		Double bondLengthCAC = aa.getBackboneCA().distance(aa.getBackboneC());
-    		Double bondLengthCN = aa.getBackboneC().distance(aa_next.getBackboneN());
     		
-    		bondLengthsCAC.add(bondLengthCAC);
-    		bondLengthsCN.add(bondLengthCN);
-    		bondLengthsNCA.add(bondLengthNCA);
+    		bondLengthsCAC.add(aa.getBackboneCA().distance(aa.getBackboneC()));
+    		bondLengthsCN.add(aa.getBackboneC().distance(aa_next.getBackboneN()));
+    		bondLengthsNCA.add(aa.getBackboneN().distance(aa.getBackboneCA()));
     		
-    		Double bondAngleNCAC = Vector.angle(aa.getBackboneN().subtract(aa.getBackboneCA()), aa.getBackboneCA().subtract(aa.getBackboneC()));
-    		Double bondAngleCACN = Vector.angle(aa.getBackboneCA().subtract(aa.getBackboneC()), aa.getBackboneC().subtract(aa_next.getBackboneN()));
-    		Double bondAngleCNCA = Vector.angle(aa.getBackboneC().subtract(aa_next.getBackboneN()), aa_next.getBackboneN().subtract(aa_next.getBackboneCA()));
-    		
-    		bondAnglesNCAC.add(bondAngleNCAC);
-    		bondAnglesCACN.add(bondAngleCACN);
-    		bondAnglesCNCA.add(bondAngleCNCA);
+    		bondAnglesNCAC.add(Vector.angle(aa.getBackboneN().subtract(aa.getBackboneCA()),aa.getBackboneCA().subtract(aa.getBackboneC())));
+    		bondAnglesCACN.add(Vector.angle(aa.getBackboneCA().subtract(aa.getBackboneC()), aa.getBackboneC().subtract(aa_next.getBackboneN())));
+    		bondAnglesCNCA.add(Vector.angle(aa.getBackboneC().subtract(aa_next.getBackboneN()), aa_next.getBackboneN().subtract(aa_next.getBackboneCA())));
     		
     		distanceCA.add(aa.getBackboneCA().distance(aa_next.getBackboneCA()));
     	}
@@ -154,11 +151,6 @@ public class MainClass
 		Double bondAngleNCAC = Vector.angle(aa.getBackboneN().subtract(aa.getBackboneCA()), aa.getBackboneCA().subtract(aa.getBackboneC()));
 		bondAnglesNCAC.add(bondAngleNCAC);
 		
-		Double sum = 0d;
-    	for(Double d:bondLengthsNCA)
-    	{
-    		sum +=d;
-    	}
     	pw.println("The Mean of Bond Lengths Ni-CAi, CAi-Ci, Ci-N(i+1) "+Mean(bondLengthsNCA) +","+Mean(bondLengthsCAC)+","+Mean(bondLengthsCN));
     	pw.println("The Standard Deviation of Bond Lengths Ni-CAi, CAi-Ci, Ci-N(i+1) "+SDV(bondLengthsNCA) +","+SDV(bondLengthsCAC)+","+SDV(bondLengthsCN));
     	pw.println("The Mean of Bond Angles Ni-CAi-Ci, CAi-Ci-N(i+1), Ci-N(i+1)-CA(i+1) "+Mean(bondAnglesNCAC) +","+Mean(bondAnglesCACN)+","+Mean(bondAnglesCNCA));
@@ -174,7 +166,7 @@ public class MainClass
     	for(AminoAcid aminoAcid :aminoAcids)
     	{
     		String residueName = aminoAcid.getrName();
-    		System.out.println(residueName);
+    		//System.out.println(residueName);
     		Map<String, Vector> atoms = aminoAcid.getAtoms();
     		for(Entry<String, Map<String, List<String>>> chi_atom_entry: TorsonialAnglesList.chi_atoms.entrySet())
     		{
