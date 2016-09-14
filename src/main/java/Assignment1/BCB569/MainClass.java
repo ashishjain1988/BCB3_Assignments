@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.biojava.nbio.structure.Structure;
+import org.biojava.nbio.structure.io.PDBFileReader;
+
 public class MainClass 
 {
 	public static List<String> atomNames = Arrays.asList("N","CA","C");
@@ -19,7 +22,8 @@ public class MainClass
     	rName = rChain = rSequence = "";
         List<AminoAcid> aminoAcids = new ArrayList<AminoAcid>();
         Map<String, Vector> aminoAcidBackbone = new HashMap<String, Vector>();
-    	
+    	PDBFileReader pdbFileReader = new PDBFileReader();
+    	//Structure structure = pdbFileReader.getStructure("/home/jain/BitBucket_Code/python-scripts/2GB1.pdb");
         BufferedReader br = new BufferedReader(new FileReader("/home/jain/BitBucket_Code/python-scripts/2GB1.pdb"));
         PrintWriter pw = new PrintWriter("output.txt");        
         String line = br.readLine();
