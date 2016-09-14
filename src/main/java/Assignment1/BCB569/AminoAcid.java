@@ -1,8 +1,11 @@
 package Assignment1.BCB569;
 
-import java.util.List;
 import java.util.Map;
-
+/**
+ * 
+ * @author Ashish Jain
+ *
+ */
 public class AminoAcid implements Comparable<AminoAcid>{
 
 	String rSequence;
@@ -11,7 +14,7 @@ public class AminoAcid implements Comparable<AminoAcid>{
 	Vector backboneN;
 	Vector backboneCA;
 	Vector backboneC;
-	Map<String, List<Vector>> atoms;
+	Map<String, Vector> atoms;
 	
 	public String getrSequence() {
 		return rSequence;
@@ -49,6 +52,13 @@ public class AminoAcid implements Comparable<AminoAcid>{
 	public void setBackboneC(Vector backboneC) {
 		this.backboneC = backboneC;
 	}
+	
+	public Map<String, Vector> getAtoms() {
+		return atoms;
+	}
+	public void setAtoms(Map<String, Vector> atoms) {
+		this.atoms = atoms;
+	}
 	public AminoAcid(String rSequence, String rChain, String rName, Vector backboneN, Vector backboneCA,
 			Vector backboneC) {
 		super();
@@ -63,7 +73,7 @@ public class AminoAcid implements Comparable<AminoAcid>{
 		super();
 	}
 	public AminoAcid(String rSequence, String rChain, String rName, Vector backboneN, Vector backboneCA,
-			Vector backboneC, Map<String, List<Vector>> atoms) {
+			Vector backboneC, Map<String,Vector> atoms) {
 		super();
 		this.rSequence = rSequence;
 		this.rChain = rChain;

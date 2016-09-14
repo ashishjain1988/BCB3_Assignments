@@ -9,10 +9,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.biojava.nbio.structure.Structure;
 import org.biojava.nbio.structure.io.PDBFileReader;
-
+/**
+ * 
+ * @author Ashish Jain
+ *
+ */
 public class MainClass 
 {
 	public static List<String> atomNames = Arrays.asList("N","CA","C");
@@ -21,54 +26,91 @@ public class MainClass
     	String rName, rChain, rSequence;
     	rName = rChain = rSequence = "";
         List<AminoAcid> aminoAcids = new ArrayList<AminoAcid>();
+        Map<String, Vector> atoms = new HashMap<String, Vector>();
         Map<String, Vector> aminoAcidBackbone = new HashMap<String, Vector>();
-    	PDBFileReader pdbFileReader = new PDBFileReader();
+    	//PDBFileReader pdbFileReader = new PDBFileReader();
     	//Structure structure = pdbFileReader.getStructure("/home/jain/BitBucket_Code/python-scripts/2GB1.pdb");
-        BufferedReader br = new BufferedReader(new FileReader("/home/jain/BitBucket_Code/python-scripts/2GB1.pdb"));
+        BufferedReader br = new BufferedReader(new FileReader("/home/jain/BitBucket_Code/2GB1.pdb"));
         PrintWriter pw = new PrintWriter("output.txt");        
         String line = br.readLine();
+        List<String> lineInPDBFile = new ArrayList<String>();
         while(line != null)
         {
+        	lineInPDBFile.add(line);
+        	line = br.readLine();
+        }
+        br.close();
+        line = "";
+        pw.println("");
+        for(int i=0;i<lineInPDBFile.size();i++)
+        {
+        	line = lineInPDBFile.get(i);
         	String recordType = line.substring(0, 4);
         	if(recordType.equals("ATOM"))
         	{
+        		String recordTypeNext = lineInPDBFile.get(i+1).substring(0, 4);
         		String atomName = line.substring(12,16).trim();
-        		if(atomNames.contains(atomName))
+        		String elementSymbol = line.substring(76,78).trim();
+        		String resName = line.substring(17,20);
+        		String resChain = line.substring(21,22);
+        		String resSequence = line.substring(22,26);
+        		Vector coordinate = new Vector(Double.valueOf(line.substring(31,38).trim()), Double.valueOf(line.substring(38,46).trim()), Double.valueOf(line.substring(46,54).trim()));
+        		
+        		//Condition for first residue
+        		if((rName.equals("") && rChain.equals("") && rSequence.equals("")))
         		{
-        			String resName = line.substring(17,20);
-        			String resChain = line.substring(21,22);
-        			String resSequence = line.substring(22,26);
-        			Vector coordinate = new Vector(Double.valueOf(line.substring(31,38).trim()), Double.valueOf(line.substring(38,46).trim()), Double.valueOf(line.substring(46,54).trim()));
-        			if(!(resName.equals(rName) && resChain.equals(rChain) && resSequence.equals(rSequence)))
-        			{
-        				rName = resName;
-        				rChain = resChain;
-        				rSequence = resSequence;
-        			}
-        			pw.println(resSequence+"\t"+atomName+"\t"+coordinate.getX()+"\t"+coordinate.getY()+"\t"+coordinate.getZ());
-        			aminoAcidBackbone.put(atomName, coordinate);
+        			rName = resName;
+        			rChain = resChain;
+        			rSequence = resSequence;
+        		
+        		}else if(!(resName.equals(rName) && resChain.equals(rChain) && resSequence.equals(rSequence)))
+        		{
         			if(aminoAcidBackbone.size() == 3)
         			{
-        				if(!aminoAcids.contains(new AminoAcid(rSequence, rChain, rName, aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C"))))
+        				//if(!aminoAcids.contains(new AminoAcid(rSequence, rChain, rName, aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C"))))
         				{
-        					aminoAcids.add(new AminoAcid(rSequence, rChain, rName, aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C")));
+        					aminoAcids.add(new AminoAcid(rSequence, rChain, rName, aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C"),atoms));
         					aminoAcidBackbone = new HashMap<String, Vector>();
+        					atoms = new HashMap<String, Vector>();
         				}
         			}
+        			rName = resName;
+        			rChain = resChain;
+        			rSequence = resSequence;
+        		}
+        		
+        		//Question 1:
+        		if(atomNames.contains(atomName))
+        		{
+        			pw.println(resSequence+"\t"+atomName+"\t"+coordinate.getX()+"\t"+coordinate.getY()+"\t"+coordinate.getZ());
+        			aminoAcidBackbone.put(atomName, coordinate);
+        		}
+        		
+        		if(!elementSymbol.equals("H"))
+        		{
+        			atoms.put(atomName, coordinate);
+        		}
+        		
+        		//Store last Residue
+        		if(!recordTypeNext.equals("ATOM"))
+        		{
+        			aminoAcids.add(new AminoAcid(rSequence, rChain, rName, aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C"),atoms));
         		}
         	}
-        	line = br.readLine();
         }
+        //System.out.println(aminoAcids.size());
         CalculateMeanAndSDofAngles(aminoAcids, pw);
         AminoAcid aa29 = aminoAcids.get(28);
         AminoAcid aa30 = aminoAcids.get(29);
         AminoAcid aa31 = aminoAcids.get(30);
+        //Question 3:
         pw.println("The Phi, Psi and Omega angles of 30th Residue is "+phiAngle(aa29, aa30)+","+psiAngle(aa30, aa31)+","+omegaAngle(aa30, aa29));
-        
-        br.close();
+        calculateSideChainTorsionAngles(aminoAcids, pw);
+       
         pw.close();
     }
     
+    //Question 2:
     public static void CalculateMeanAndSDofAngles(List<AminoAcid> aminoAcids, PrintWriter pw)
     {
     	List<Double> bondLengthsNCA = new ArrayList<Double>();
@@ -123,6 +165,30 @@ public class MainClass
     	pw.println("The Standard Deviation of Bond Angles Ni-CAi-Ci, CAi-Ci-N(i+1), Ci-N(i+1)-CA(i+1) "+SDV(bondAnglesNCAC) +","+SDV(bondAnglesCACN)+","+SDV(bondAnglesCNCA));
     	pw.println("The Mean of distance between CAi-CA(i+1) "+Mean(distanceCA));
     	pw.println("The Standard Deviation of of distance between CAi-CA(i+1) "+SDV(distanceCA));
+    }
+    
+    //Question 5:
+    public static void calculateSideChainTorsionAngles(List<AminoAcid> aminoAcids,PrintWriter pw)
+    {
+    	pw.println("Residue Name\tResidue Chain\tResidue Sequence\tSide Chain Angle\tValue");
+    	for(AminoAcid aminoAcid :aminoAcids)
+    	{
+    		String residueName = aminoAcid.getrName();
+    		System.out.println(residueName);
+    		Map<String, Vector> atoms = aminoAcid.getAtoms();
+    		for(Entry<String, Map<String, List<String>>> chi_atom_entry: TorsonialAnglesList.chi_atoms.entrySet())
+    		{
+    			String angleName = chi_atom_entry.getKey();
+    			if(chi_atom_entry.getValue().get(residueName) != null)
+    			{
+    				List<String> angleAtoms = chi_atom_entry.getValue().get(residueName);
+    				//System.out.println(angleName+", "+residueName);
+    				//System.out.println(atoms.get(angleAtoms.get(0))+","+atoms.get(angleAtoms.get(1))+","+atoms.get(angleAtoms.get(2))+","+atoms.get(angleAtoms.get(3)));
+    				Double torsionalAngle = getTorsionalAngle(atoms.get(angleAtoms.get(0)), atoms.get(angleAtoms.get(1)), atoms.get(angleAtoms.get(2)), atoms.get(angleAtoms.get(3)));
+    				pw.println(residueName+"\t"+aminoAcid.getrChain()+"\t"+aminoAcid.getrSequence()+"\t"+angleName+"\t"+torsionalAngle);
+    			}
+    		}
+    	}
     }
     
     public static Double Mean(List<Double> list)

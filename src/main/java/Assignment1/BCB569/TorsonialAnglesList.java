@@ -5,7 +5,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * 
+ * @author Ashish Jain
+ *
+ */
 public class TorsonialAnglesList {
 
 	public static final Map<String, Map<String, List<String>>> chi_atoms;
