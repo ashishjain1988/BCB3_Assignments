@@ -15,79 +15,68 @@ public class TorsonialAnglesList {
 		atoms.put("ARG", Arrays.asList("N","CA","CB","CG"));
 		atoms.put("ASN", Arrays.asList("N","CA","CB","CG"));
 		atoms.put("ASP", Arrays.asList("N","CA","CB","CG"));
-		atoms.put("ARG", Arrays.asList("N","CA","CB","CG"));
-		atoms.put("ARG", Arrays.asList("N","CA","CB","CG"));
-		atoms.put("ARG", Arrays.asList("N","CA","CB","CG"));
-		atoms.put("ARG", Arrays.asList("N","CA","CB","CG"));
-		atoms.put("ARG", Arrays.asList("N","CA","CB","CG"));
-		atoms.put("ARG", Arrays.asList("N","CA","CB","CG"));
-		atoms.put("ARG", Arrays.asList("N","CA","CB","CG"));
-		atoms.put("ARG", Arrays.asList("N","CA","CB","CG"));
-		atoms.put("ARG", Arrays.asList("N","CA","CB","CG"));
-		atoms.put("ARG", Arrays.asList("N","CA","CB","CG"));
-		
+		atoms.put("CYS", Arrays.asList("N","CA","CB","SG"));
+		atoms.put("GLN", Arrays.asList("N","CA","CB","CG"));
+		atoms.put("GLU", Arrays.asList("N","CA","CB","CG"));
+		atoms.put("HIS", Arrays.asList("N","CA","CB","CG"));
+		atoms.put("ILE", Arrays.asList("N","CA","CB","CG1"));
+		atoms.put("LEU", Arrays.asList("N","CA","CB","CG"));
+		atoms.put("LYS", Arrays.asList("N","CA","CB","CG"));
+		atoms.put("MET", Arrays.asList("N","CA","CB","CG"));
+		atoms.put("PHE", Arrays.asList("N","CA","CB","CG"));
+		atoms.put("PRO", Arrays.asList("N","CA","CB","CG"));
+		atoms.put("SER", Arrays.asList("N","CA","CB","OG"));
+		atoms.put("THR", Arrays.asList("N","CA","CB","OG1"));
+		atoms.put("TRP", Arrays.asList("N","CA","CB","CG"));
+		atoms.put("TYR", Arrays.asList("N","CA","CB","CG"));
+		atoms.put("VAL", Arrays.asList("N","CA","CB","CG1"));
 		temp_hi_atoms.put("chi1", atoms);
+		
+		atoms = new HashMap<String, List<String>>();
+		atoms.put("VAL", Arrays.asList("N", "CA", "CB", "CG2"));
+		temp_hi_atoms.put("altchi1", atoms);
+		
+		atoms = new HashMap<String, List<String>>();
+		atoms.put("ARG", Arrays.asList("CA", "CB", "CG", "CD"));
+		atoms.put("ASN", Arrays.asList("CA", "CB", "CG", "OD1"));
+		atoms.put("ASP", Arrays.asList("CA", "CB", "CG", "OD1"));
+		atoms.put("GLN", Arrays.asList("CA", "CB", "CG", "CD"));
+		atoms.put("GLU", Arrays.asList("CA", "CB", "CG", "CD"));
+		atoms.put("HIS", Arrays.asList("CA", "CB", "CG", "ND1"));
+		atoms.put("ILE", Arrays.asList("CA", "CB", "CG1", "CD1"));
+		atoms.put("LEU", Arrays.asList("CA", "CB", "CG", "CD1"));
+		atoms.put("LYS", Arrays.asList("CA", "CB", "CG", "CD"));
+		atoms.put("MET", Arrays.asList("CA", "CB", "CG", "SD"));
+		atoms.put("PHE", Arrays.asList("CA", "CB", "CG", "CD1"));
+		atoms.put("PRO", Arrays.asList("CA", "CB", "CG", "CD"));
+		atoms.put("TRP", Arrays.asList("CA", "CB", "CG", "CD1"));
+		atoms.put("TYR", Arrays.asList("CA", "CB", "CG", "CD1"));
+		temp_hi_atoms.put("chi2", atoms);
+		
+		atoms = new HashMap<String, List<String>>();
+		atoms.put("ASP", Arrays.asList("CA", "CB", "CG", "OD2"));
+		atoms.put("LEU", Arrays.asList("CA", "CB", "CG", "CD2"));
+		atoms.put("PHE", Arrays.asList("CA", "CB", "CG", "CD2"));
+		atoms.put("TYR", Arrays.asList("CA", "CB", "CG", "CD2"));
+		temp_hi_atoms.put("altchi2", atoms);
+		
+		atoms = new HashMap<String, List<String>>();
+		atoms.put("ARG", Arrays.asList("CB", "CG", "CD", "NE"));
+		atoms.put("GLN", Arrays.asList("CB", "CG", "CD", "OE1"));
+		atoms.put("GLU", Arrays.asList("CB", "CG", "CD", "OE1"));
+		atoms.put("LYS", Arrays.asList("CB", "CG", "CD", "CE"));
+		atoms.put("MET", Arrays.asList("CB", "CG", "SD", "CE"));
+		temp_hi_atoms.put("chi3", atoms);
+		
+		atoms = new HashMap<String, List<String>>();
+		atoms.put("ARG", Arrays.asList("CG", "CD", "NE", "CZ"));
+		atoms.put("LYS", Arrays.asList("CG", "CD", "CE", "NZ"));
+		temp_hi_atoms.put("chi4", atoms);
+		
+		atoms = new HashMap<String, List<String>>();
+		atoms.put("ARG", Arrays.asList("CD", "NE", "CZ", "NH1"));
+		temp_hi_atoms.put("chi5", atoms);
+		
         chi_atoms = Collections.unmodifiableMap(temp_hi_atoms);
     }
-	/*chi_atoms = dict(
-	        chi1=dict(
-	            ARG=["N", "CA", "CB", "CG"],
-	            ASN=["N", "CA", "CB", "CG"],
-	            ASP=["N", "CA", "CB", "CG"],
-	            CYS=["N", "CA", "CB", "SG"],
-	            GLN=["N", "CA", "CB", "CG"],
-	            GLU=["N", "CA", "CB", "CG"],
-	            HIS=["N", "CA", "CB", "CG"],
-	            ILE=["N", "CA", "CB", "CG1"],
-	            LEU=["N", "CA", "CB", "CG"],
-	            LYS=["N", "CA", "CB", "CG"],
-	            MET=["N", "CA", "CB", "CG"],
-	            PHE=["N", "CA", "CB", "CG"],
-	            PRO=["N", "CA", "CB", "CG"],
-	            SER=["N", "CA", "CB", "OG"],
-	            THR=["N", "CA", "CB", "OG1"],
-	            TRP=["N", "CA", "CB", "CG"],
-	            TYR=["N", "CA", "CB", "CG"],
-	            VAL=["N", "CA", "CB", "CG1"],
-	        ),
-	        altchi1=dict(
-	            VAL=["N", "CA", "CB", "CG2"],
-	        ),
-	        chi2=dict(
-	            ARG=["CA", "CB", "CG", "CD"],
-	            ASN=["CA", "CB", "CG", "OD1"],
-	            ASP=["CA", "CB", "CG", "OD1"],
-	            GLN=["CA", "CB", "CG", "CD"],
-	            GLU=["CA", "CB", "CG", "CD"],
-	            HIS=["CA", "CB", "CG", "ND1"],
-	            ILE=["CA", "CB", "CG1", "CD1"],
-	            LEU=["CA", "CB", "CG", "CD1"],
-	            LYS=["CA", "CB", "CG", "CD"],
-	            MET=["CA", "CB", "CG", "SD"],
-	            PHE=["CA", "CB", "CG", "CD1"],
-	            PRO=["CA", "CB", "CG", "CD"],
-	            TRP=["CA", "CB", "CG", "CD1"],
-	            TYR=["CA", "CB", "CG", "CD1"],
-	        ),
-	        altchi2=dict(
-	            ASP=["CA", "CB", "CG", "OD2"],
-	            LEU=["CA", "CB", "CG", "CD2"],
-	            PHE=["CA", "CB", "CG", "CD2"],
-	            TYR=["CA", "CB", "CG", "CD2"],
-	        ),
-	        chi3=dict(
-	            ARG=["CB", "CG", "CD", "NE"],
-	            GLN=["CB", "CG", "CD", "OE1"],
-	            GLU=["CB", "CG", "CD", "OE1"],
-	            LYS=["CB", "CG", "CD", "CE"],
-	            MET=["CB", "CG", "SD", "CE"],
-	        ),
-	        chi4=dict(
-	            ARG=["CG", "CD", "NE", "CZ"],
-	            LYS=["CG", "CD", "CE", "NZ"],
-	        ),
-	        chi5=dict(
-	            ARG=["CD", "NE", "CZ", "NH1"],
-	        ),
-	    )*/
 }
