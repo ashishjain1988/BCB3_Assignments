@@ -155,7 +155,7 @@ public class MainClass
     	pw.println("The Standard Deviation of of distance between CAi-CA(i+1) "+SDV(distanceCA));
     }
     
-    //Question 4:
+    //Question 4a:
     public static List<AminoAcid> rotation(List<AminoAcid> aminoAcids,Double PhiAngle, Double PsiAngle)
     {
     	List<AminoAcid> newAminoAcids = new ArrayList<AminoAcid>();
@@ -179,6 +179,21 @@ public class MainClass
     		aminoAcids.add(newAA);
     	}
     	return newAminoAcids;
+    }
+    
+  //Question 4b:
+    public static void minimumDistance(List<AminoAcid> rotatedAminoAcids)
+    {
+    	Map<String, Double> atomsDistances = new HashMap<String, Double>();
+    	for(int i=0;i<rotatedAminoAcids.size()-1;i++)
+    	{
+    		//Calculate Distance between each atom in a residue
+    		for(int j=i+1;j<rotatedAminoAcids.size();j++)
+    		{
+    			//Calculate Distance between atoms from other residues 
+    		}
+    	}
+    	//Calculate distance between the atoms of last residue. 
     }
     
     //Question 5:
