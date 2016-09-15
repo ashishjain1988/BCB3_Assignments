@@ -43,6 +43,12 @@ public class Vector {
         return new Vector(x - v.x, y - v.y, z - v.z);
     }
 	
+	public Double[] toArray()
+	{
+		Double [] arr = {x,y,z};
+		return arr;
+	}
+	
 	public double dotProduct(Vector v) {
         return MathArrays.linearCombination(x, v.x, y, v.y, z, v.z);
     }
@@ -75,6 +81,25 @@ public class Vector {
         // the vectors are sufficiently separated to use the cosine
         return FastMath.acos(dot / normProduct);
 
+    }
+    public static Vector multiplyVectorMatrix(Double [][] rotationMatrix,Double[] v)
+    {
+    	Vector finalVector;
+    	int rows = rotationMatrix.length;
+        int columns = rotationMatrix[0].length;
+
+        double[] result = new double[rows];
+
+        for (int row = 0; row < rows; row++) {
+            double sum = 0;
+            for (int column = 0; column < columns; column++) {
+                sum += rotationMatrix[row][column]
+                        * v[column];
+            }
+            result[row] = sum;
+        }
+        finalVector = new Vector(result[0], result[1], result[2]);
+        return finalVector;
     }
 
 	@Override

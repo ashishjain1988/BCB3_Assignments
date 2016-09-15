@@ -155,13 +155,30 @@ public class MainClass
     	pw.println("The Standard Deviation of of distance between CAi-CA(i+1) "+SDV(distanceCA));
     }
     
-    public static void multiplyVectorMatrix(Double [][] rotationMatrix,Vector v)
+    //Question 4:
+    public static List<AminoAcid> rotation(List<AminoAcid> aminoAcids,Double PhiAngle, Double PsiAngle)
     {
-    	//Arrays.stream(rotationMatrix).mapToDouble(row ->IntStream.range(0, row.length).mapToDouble(col -> row[col] * vector[col]).sum()).toArray();
-    }
-    public static void rotation(List<AminoAcid> aminoAcids,PrintWriter pw)
-    {
-    	
+    	List<AminoAcid> newAminoAcids = new ArrayList<AminoAcid>();
+    	Double [] [] xRotationMatrix = {{1d,0d,0d},{0d,Math.cos(-PhiAngle),-Math.sin(-PhiAngle)},{0d,Math.sin(-PhiAngle),Math.cos(-PhiAngle)}};
+    	Double [] [] zRotationMatrix = {{Math.cos(-PsiAngle),-Math.sin(-PsiAngle),0d},{Math.sin(-PsiAngle),Math.cos(-PsiAngle),0d},{0d,0d,1d}};
+    	for(int i=0;i<aminoAcids.size();i++)
+    	{
+    		AminoAcid aa = aminoAcids.get(i);
+    		Map<String, Vector> atoms = aa.getAtoms();
+    		Map<String, Vector> newAtoms = new HashMap<String, Vector>();
+    		for(Entry<String, Vector> atom : atoms.entrySet())
+    		{
+    			String atomName = atom.getKey();
+    			Vector atomVector = atom.getValue();
+    			Vector afterRotation = Vector.multiplyVectorMatrix(xRotationMatrix,atomVector.toArray());
+    			afterRotation = Vector.multiplyVectorMatrix(zRotationMatrix, afterRotation.toArray());
+    			newAtoms.put(atomName, afterRotation);
+    		}
+    		AminoAcid newAA = aa;
+    		newAA.setAtoms(newAtoms);
+    		aminoAcids.add(newAA);
+    	}
+    	return newAminoAcids;
     }
     
     //Question 5:
