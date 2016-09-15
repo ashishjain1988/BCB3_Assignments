@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.biojava.nbio.structure.Structure;
-import org.biojava.nbio.structure.io.PDBFileReader;
 /**
  * 
  * @author Ashish Jain
@@ -28,8 +26,6 @@ public class MainClass
         List<AminoAcid> aminoAcids = new ArrayList<AminoAcid>();
         Map<String, Vector> atoms = new HashMap<String, Vector>();
         Map<String, Vector> aminoAcidBackbone = new HashMap<String, Vector>();
-    	//PDBFileReader pdbFileReader = new PDBFileReader();
-    	//Structure structure = pdbFileReader.getStructure("/home/jain/BitBucket_Code/python-scripts/2GB1.pdb");
         BufferedReader br = new BufferedReader(new FileReader("/home/jain/BitBucket_Code/2GB1.pdb"));
         PrintWriter pw = new PrintWriter("output.txt");        
         String line = br.readLine();
