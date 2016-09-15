@@ -83,10 +83,10 @@ public class MainClass
         			aminoAcidBackbone.put(atomName, coordinate);
         		}
         		
-        		if(!elementSymbol.equals("H"))
-        		{
+        		//if(!elementSymbol.equals("H"))
+        		//{
         			atoms.put(atomName, coordinate);
-        		}
+        		//}
         		
         		//Store last Residue
         		if(!recordTypeNext.equals("ATOM"))
@@ -153,6 +153,15 @@ public class MainClass
     	pw.println("The Standard Deviation of Bond Angles Ni-CAi-Ci, CAi-Ci-N(i+1), Ci-N(i+1)-CA(i+1) "+SDV(bondAnglesNCAC) +","+SDV(bondAnglesCACN)+","+SDV(bondAnglesCNCA));
     	pw.println("The Mean of distance between CAi-CA(i+1) "+Mean(distanceCA));
     	pw.println("The Standard Deviation of of distance between CAi-CA(i+1) "+SDV(distanceCA));
+    }
+    
+    public static void multiplyVectorMatrix(Double [][] rotationMatrix,Vector v)
+    {
+    	//Arrays.stream(rotationMatrix).mapToDouble(row ->IntStream.range(0, row.length).mapToDouble(col -> row[col] * vector[col]).sum()).toArray();
+    }
+    public static void rotation(List<AminoAcid> aminoAcids,PrintWriter pw)
+    {
+    	
     }
     
     //Question 5:
