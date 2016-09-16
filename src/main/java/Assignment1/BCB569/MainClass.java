@@ -66,7 +66,7 @@ public class MainClass
         			{
         				//if(!aminoAcids.contains(new AminoAcid(rSequence, rChain, rName, aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C"))))
         				{
-        					aminoAcids.add(new AminoAcid(rSequence, rChain, rName, aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C"),atoms));
+        					aminoAcids.add(new AminoAcid(rSequence, rChain, rName, elementSymbol,aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C"),atoms));
         					aminoAcidBackbone = new HashMap<String, Vector>();
         					atoms = new HashMap<String, Vector>();
         				}
@@ -91,7 +91,7 @@ public class MainClass
         		//Store last Residue
         		if(!recordTypeNext.equals("ATOM"))
         		{
-        			aminoAcids.add(new AminoAcid(rSequence, rChain, rName, aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C"),atoms));
+        			aminoAcids.add(new AminoAcid(rSequence, rChain, rName,elementSymbol,aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C"),atoms));
         		}
         	}
         }
@@ -103,7 +103,7 @@ public class MainClass
         AminoAcid aa31 = aminoAcids.get(30);
         //Question 3:
         pw.println("Question 3:");
-        pw.println("The Phi, Psi and Omega angles of 30th Residue is "+phiAngle(aa29, aa30)+","+psiAngle(aa30, aa31)+","+omegaAngle(aa30, aa29));
+        pw.println("The Phi, Psi and Omega angles of 30th Residue is "+AminoAcid.phiAngle(aa29, aa30)+","+AminoAcid.psiAngle(aa30, aa31)+","+AminoAcid.omegaAngle(aa30, aa29));
         pw.println("Question 5:");
         calculateSideChainTorsionAngles(aminoAcids, pw);
        
@@ -182,19 +182,49 @@ public class MainClass
     }
     
   //Question 4b:
-    public static void minimumDistance(List<AminoAcid> rotatedAminoAcids)
+    public static List<Object> minimumDistance(List<AminoAcid> rotatedAminoAcids)
     {
-    	Map<String, Double> atomsDistances = new HashMap<String, Double>();
+    	//Map<String, Double> atomsDistances = new HashMap<String, Double>();
+    	Double distance = 1000d;
+    	String atomsName = "";
+    	List<Object> finalResult =  new ArrayList<Object>();
     	for(int i=0;i<rotatedAminoAcids.size()-1;i++)
     	{
     		//Calculate Distance between each atom in a residue
+    		AminoAcid aa1 = rotatedAminoAcids.get(i);
+    		List<Object> result = AminoAcid.getMinimumDistanceBetweenAtomsOfResidues(aa1, aa1, true);
+    		if(distance > (Double)result.get(0))
+    		{
+    			distance = (Double)result.get(0);
+    			atomsName = (String)result.get(1);
+    		}
     		for(int j=i+1;j<rotatedAminoAcids.size();j++)
     		{
-    			//Calculate Distance between atoms from other residues 
+    			//Calculate Distance between atoms from other residues
+    			AminoAcid aa2 = rotatedAminoAcids.get(j);
+    			result = AminoAcid.getMinimumDistanceBetweenAtomsOfResidues(aa1, aa2, false);
+        		if(distance > (Double)result.get(0))
+        		{
+        			distance = (Double)result.get(0);
+        			atomsName = (String)result.get(1);
+        		}
     		}
     	}
     	//Calculate distance between the atoms of last residue. 
+    	AminoAcid aa1 = rotatedAminoAcids.get(rotatedAminoAcids.size()-1);
+    	List<Object> result = AminoAcid.getMinimumDistanceBetweenAtomsOfResidues(aa1, aa1, true);
+		if(distance > (Double)result.get(0))
+		{
+			distance = (Double)result.get(0);
+			atomsName = (String)result.get(1);
+		}
+    	
+		finalResult.add(distance);
+    	finalResult.add(atomsName);
+    	return finalResult;
     }
+    
+    
     
     //Question 5:
     public static void calculateSideChainTorsionAngles(List<AminoAcid> aminoAcids,PrintWriter pw)
@@ -213,7 +243,7 @@ public class MainClass
     				List<String> angleAtoms = chi_atom_entry.getValue().get(residueName);
     				//System.out.println(angleName+", "+residueName);
     				//System.out.println(atoms.get(angleAtoms.get(0))+","+atoms.get(angleAtoms.get(1))+","+atoms.get(angleAtoms.get(2))+","+atoms.get(angleAtoms.get(3)));
-    				Double torsionalAngle = getTorsionalAngle(atoms.get(angleAtoms.get(0)), atoms.get(angleAtoms.get(1)), atoms.get(angleAtoms.get(2)), atoms.get(angleAtoms.get(3)));
+    				Double torsionalAngle = Vector.getTorsionalAngle(atoms.get(angleAtoms.get(0)), atoms.get(angleAtoms.get(1)), atoms.get(angleAtoms.get(2)), atoms.get(angleAtoms.get(3)));
     				pw.println(residueName+"\t"+aminoAcid.getrChain()+"\t"+aminoAcid.getrSequence()+"\t"+angleName+"\t"+torsionalAngle);
     			}
     		}
@@ -241,35 +271,5 @@ public class MainClass
         return Math.sqrt(num/deno);
     }
     
-    public static Double getTorsionalAngle(Vector p0,Vector p1,Vector p2,Vector p3)
-    {
-    	Vector v01 = p0.subtract(p1);
-    	Vector v32 = p3.subtract(p2);
-    	Vector v12 = p1.subtract(p2);
-    	Vector v0 = v12.crossProduct(v01);
-		Vector v3 = v12.crossProduct(v32);
-		Double a = Vector.angle(v0,v3);
-		if(v0.crossProduct(v3).dotProduct(v12) > 0)
-		{
-			a = -a;
-		}
-		return a;
-    }
-    
-    
-    public static double phiAngle(AminoAcid prev, AminoAcid current)
-    {
-    	return getTorsionalAngle(prev.getBackboneC(), current.getBackboneN(), current.getBackboneCA(), current.getBackboneC());
-    }
-    
-    public static double psiAngle(AminoAcid current, AminoAcid next)
-    {
-    	return getTorsionalAngle(current.getBackboneN(), current.getBackboneCA(), current.getBackboneC(), next.getBackboneN());
-    }
-    
-    public static double omegaAngle(AminoAcid current, AminoAcid next)
-    {
-    	return getTorsionalAngle(current.getBackboneCA(), current.getBackboneN(), next.getBackboneC(), next.getBackboneCA());
-    }
     
 }

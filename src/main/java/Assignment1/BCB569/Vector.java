@@ -2,7 +2,11 @@ package Assignment1.BCB569;
 
 import org.apache.commons.math3.util.FastMath;
 import org.apache.commons.math3.util.MathArrays;
-
+/**
+ * 
+ * @author Ashish Jain
+ *
+ */
 public class Vector {
 	
 	private final double x;
@@ -102,6 +106,21 @@ public class Vector {
         return finalVector;
     }
 
+    public static Double getTorsionalAngle(Vector p0,Vector p1,Vector p2,Vector p3)
+    {
+    	Vector v01 = p0.subtract(p1);
+    	Vector v32 = p3.subtract(p2);
+    	Vector v12 = p1.subtract(p2);
+    	Vector v0 = v12.crossProduct(v01);
+		Vector v3 = v12.crossProduct(v32);
+		Double a = Vector.angle(v0,v3);
+		if(v0.crossProduct(v3).dotProduct(v12) > 0)
+		{
+			a = -a;
+		}
+		return a;
+    }
+    
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
