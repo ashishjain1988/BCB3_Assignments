@@ -15,7 +15,6 @@ public class AminoAcid implements Comparable<AminoAcid>{
 	String rChain;
 	String rName;
 	String elementSymbol;
-	Integer residueSeqNumber;
 	Vector backboneN;
 	Vector backboneCA;
 	Vector backboneC;
@@ -72,12 +71,6 @@ public class AminoAcid implements Comparable<AminoAcid>{
 		this.elementSymbol = elementSymbol;
 	}
 	
-	public Integer getResidueSeqNumber() {
-		return residueSeqNumber;
-	}
-	public void setResidueSeqNumber(Integer residueSeqNumber) {
-		this.residueSeqNumber = residueSeqNumber;
-	}
 	public AminoAcid(String rSequence, String rChain, String rName, Vector backboneN, Vector backboneCA,
 			Vector backboneC) {
 		super();
