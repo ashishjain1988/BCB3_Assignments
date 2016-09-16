@@ -48,9 +48,9 @@ public class MainClass
         		String recordTypeNext = lineInPDBFile.get(i+1).substring(0, 4);
         		String atomName = line.substring(12,16).trim();
         		String elementSymbol = line.substring(76,78).trim();
-        		String resName = line.substring(17,20);
-        		String resChain = line.substring(21,22);
-        		String resSequence = line.substring(22,26);
+        		String resName = line.substring(17,20).trim();
+        		String resChain = line.substring(21,22).trim();
+        		String resSequence = line.substring(22,26).trim();
         		Vector coordinate = new Vector(Double.valueOf(line.substring(31,38).trim()), Double.valueOf(line.substring(38,46).trim()), Double.valueOf(line.substring(46,54).trim()));
         		
         		//Condition for first residue
@@ -104,6 +104,9 @@ public class MainClass
         //Question 3:
         pw.println("Question 3:");
         pw.println("The Phi, Psi and Omega angles of 30th Residue is "+AminoAcid.phiAngle(aa29, aa30)+","+AminoAcid.psiAngle(aa30, aa31)+","+AminoAcid.omegaAngle(aa30, aa29));
+        //Vector rot = aa30.getBackboneCA().crossProduct(aa30.getBackboneC());
+        //Vector id = new Vector(rot.getX()/(aa30.getBackboneC().length()*aa30.getBackboneCA().length()*Math.sin(Math.toRadians(Vector.angle(aa30.getBackboneCA(), aa30.getBackboneC())))), rot.getY()/rot.length()*Math.sin(Math.toRadians(Vector.angle(aa30.getBackboneCA(), aa30.getBackboneC()))), rot.getZ()/rot.length()*Math.sin(Math.toRadians(Vector.angle(aa30.getBackboneCA(), aa30.getBackboneC()))));
+        //System.out.println(id);
         PrintWriter pw1 = new PrintWriter("2GB1-new.pdb");
         List<AminoAcid> rotatedAminoAcids = rotation(aminoAcids, AminoAcid.phiAngle(aa29, aa30), AminoAcid.psiAngle(aa30, aa31));
         for(int i=0;i<lineInPDBFile.size();i++)
@@ -113,14 +116,14 @@ public class MainClass
         	if(recordType.equals("ATOM"))
         	{
         		String atomName = line.substring(12,16).trim();
-        		String resChain = line.substring(21,22);
-        		AminoAcid aminoAcid =rotatedAminoAcids.get(Integer.parseInt(resChain)-1);
+        		String resSequence = line.substring(22,26).trim();
+        		AminoAcid aminoAcid =rotatedAminoAcids.get(Integer.parseInt(resSequence)-1);
         		Vector vector = aminoAcid.getAtoms().get(atomName);
-        		line = line.replace(line.substring(31,38).trim(), String.valueOf(vector.getX()));
-        		line = line.replace(line.substring(38,46).trim(), String.valueOf(vector.getY()));
-        		line = line.replace(line.substring(46,54).trim(), String.valueOf(vector.getZ()));
-        		pw1.println(line);
+        		line = line.replace(line.substring(31,38).trim(), String.format( "%.3f", vector.getX()));
+        		line = line.replace(line.substring(38,46).trim(), String.format( "%.3f", vector.getY()));
+        		line = line.replace(line.substring(46,54).trim(), String.format( "%.3f", vector.getZ()));
         	}
+        	pw1.println(line);
         }
         pw1.close();
         pw.println("Question 4b:");
@@ -198,7 +201,7 @@ public class MainClass
     		}
     		AminoAcid newAA = aa;
     		newAA.setAtoms(newAtoms);
-    		aminoAcids.add(newAA);
+    		newAminoAcids.add(newAA);
     	}
     	return newAminoAcids;
     }
@@ -209,17 +212,18 @@ public class MainClass
     	//Map<String, Double> atomsDistances = new HashMap<String, Double>();
     	Double distance = 1000d;
     	String atomsName = "";
+    	List<Object> result;
     	List<Object> finalResult =  new ArrayList<Object>();
     	for(int i=0;i<rotatedAminoAcids.size()-1;i++)
     	{
     		//Calculate Distance between each atom in a residue
     		AminoAcid aa1 = rotatedAminoAcids.get(i);
-    		List<Object> result = AminoAcid.getMinimumDistanceBetweenAtomsOfResidues(aa1, aa1, true);
+    		/*result = AminoAcid.getMinimumDistanceBetweenAtomsOfResidues(aa1, aa1, true);
     		if(distance > (Double)result.get(0))
     		{
     			distance = (Double)result.get(0);
     			atomsName = (String)result.get(1);
-    		}
+    		}*/
     		for(int j=i+1;j<rotatedAminoAcids.size();j++)
     		{
     			//Calculate Distance between atoms from other residues
@@ -233,13 +237,13 @@ public class MainClass
     		}
     	}
     	//Calculate distance between the atoms of last residue. 
-    	AminoAcid aa1 = rotatedAminoAcids.get(rotatedAminoAcids.size()-1);
+    	/*AminoAcid aa1 = rotatedAminoAcids.get(rotatedAminoAcids.size()-1);
     	List<Object> result = AminoAcid.getMinimumDistanceBetweenAtomsOfResidues(aa1, aa1, true);
 		if(distance > (Double)result.get(0))
 		{
 			distance = (Double)result.get(0);
 			atomsName = (String)result.get(1);
-		}
+		}*/
     	
 		finalResult.add(distance);
     	finalResult.add(atomsName);

@@ -15,6 +15,7 @@ public class AminoAcid implements Comparable<AminoAcid>{
 	String rChain;
 	String rName;
 	String elementSymbol;
+	Integer residueSeqNumber;
 	Vector backboneN;
 	Vector backboneCA;
 	Vector backboneC;
@@ -69,6 +70,13 @@ public class AminoAcid implements Comparable<AminoAcid>{
 	}
 	public void setElementSymbol(String elementSymbol) {
 		this.elementSymbol = elementSymbol;
+	}
+	
+	public Integer getResidueSeqNumber() {
+		return residueSeqNumber;
+	}
+	public void setResidueSeqNumber(Integer residueSeqNumber) {
+		this.residueSeqNumber = residueSeqNumber;
 	}
 	public AminoAcid(String rSequence, String rChain, String rName, Vector backboneN, Vector backboneCA,
 			Vector backboneC) {
@@ -140,7 +148,7 @@ public class AminoAcid implements Comparable<AminoAcid>{
 					if(dist < distance)
 					{
 						distance = dist;
-						atomsName = entry1.getKey()+" of "+aa1.getrName()+" "+aa1.getrChain()+"-"+entry2.getKey()+" of "+aa2.getrName()+" "+aa2.getrChain();
+						atomsName = entry1.getKey()+" of "+aa1.getrName()+" "+aa1.getrSequence()+"-"+entry2.getKey()+" of "+aa2.getrName()+" "+aa2.getrSequence();
 					}
 				}
 			}
