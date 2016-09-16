@@ -140,7 +140,7 @@ public class AminoAcid implements Comparable<AminoAcid>{
 					if(dist < distance)
 					{
 						distance = dist;
-						atomsName = aa1.getrName()+"-"+entry1.getKey()+":"+aa2.getrName()+"-"+entry2.getKey();
+						atomsName = entry1.getKey()+" of "+aa1.getrName()+" "+aa1.getrChain()+"-"+entry2.getKey()+" of "+aa2.getrName()+" "+aa2.getrChain();
 					}
 				}
 			}

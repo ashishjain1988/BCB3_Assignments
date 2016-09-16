@@ -104,6 +104,28 @@ public class MainClass
         //Question 3:
         pw.println("Question 3:");
         pw.println("The Phi, Psi and Omega angles of 30th Residue is "+AminoAcid.phiAngle(aa29, aa30)+","+AminoAcid.psiAngle(aa30, aa31)+","+AminoAcid.omegaAngle(aa30, aa29));
+        PrintWriter pw1 = new PrintWriter("2GB1-new.pdb");
+        List<AminoAcid> rotatedAminoAcids = rotation(aminoAcids, AminoAcid.phiAngle(aa29, aa30), AminoAcid.psiAngle(aa30, aa31));
+        for(int i=0;i<lineInPDBFile.size();i++)
+        {
+        	line = lineInPDBFile.get(i);
+        	String recordType = line.substring(0, 4);
+        	if(recordType.equals("ATOM"))
+        	{
+        		String atomName = line.substring(12,16).trim();
+        		String resChain = line.substring(21,22);
+        		AminoAcid aminoAcid =rotatedAminoAcids.get(Integer.parseInt(resChain)-1);
+        		Vector vector = aminoAcid.getAtoms().get(atomName);
+        		line = line.replace(line.substring(31,38).trim(), String.valueOf(vector.getX()));
+        		line = line.replace(line.substring(38,46).trim(), String.valueOf(vector.getY()));
+        		line = line.replace(line.substring(46,54).trim(), String.valueOf(vector.getZ()));
+        		pw1.println(line);
+        	}
+        }
+        pw1.close();
+        pw.println("Question 4b:");
+        List<Object> result = minimumDistance(rotatedAminoAcids);
+        pw.println("The minimum distance is "+result.get(0)+" and the pair of atoms are "+result.get(1));
         pw.println("Question 5:");
         calculateSideChainTorsionAngles(aminoAcids, pw);
        
