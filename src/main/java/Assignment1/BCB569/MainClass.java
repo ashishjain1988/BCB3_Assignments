@@ -1,6 +1,7 @@
 package Assignment1.BCB569;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,6 +22,18 @@ public class MainClass
 	public static List<String> atomNames = Arrays.asList("N","CA","C");
     public static void main( String[] args ) throws IOException
     {
+    	if(args.length != 1)
+    	{
+    		System.err.println("Please enter PDB file Path.");
+    		System.exit(0);
+    	}
+    	
+    	if(!new File(args[0]).exists())
+    	{
+    		System.err.println("PDB File path is not correct");
+    		System.exit(0);
+    	}
+    	
     	String rName, rChain, rSequence;
     	rName = rChain = rSequence = "";
         List<AminoAcid> aminoAcids = new ArrayList<AminoAcid>();
