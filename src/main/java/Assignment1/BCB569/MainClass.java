@@ -108,7 +108,7 @@ public class MainClass
         //Vector id = new Vector(rot.getX()/(aa30.getBackboneC().length()*aa30.getBackboneCA().length()*Math.sin(Math.toRadians(Vector.angle(aa30.getBackboneCA(), aa30.getBackboneC())))), rot.getY()/rot.length()*Math.sin(Math.toRadians(Vector.angle(aa30.getBackboneCA(), aa30.getBackboneC()))), rot.getZ()/rot.length()*Math.sin(Math.toRadians(Vector.angle(aa30.getBackboneCA(), aa30.getBackboneC()))));
         //System.out.println(id);
         PrintWriter pw1 = new PrintWriter("2GB1-new.pdb");
-        List<AminoAcid> rotatedAminoAcids = rotation(aminoAcids, AminoAcid.phiAngle(aa29, aa30), AminoAcid.psiAngle(aa30, aa31));
+        List<AminoAcid> rotatedAminoAcids = rotation(aminoAcids, Math.toRadians(AminoAcid.phiAngle(aa29, aa30)), Math.toRadians(AminoAcid.psiAngle(aa30, aa31)));
         for(int i=0;i<lineInPDBFile.size();i++)
         {
         	line = lineInPDBFile.get(i);
@@ -186,7 +186,7 @@ public class MainClass
     	List<AminoAcid> newAminoAcids = new ArrayList<AminoAcid>();
     	Double [] [] xRotationMatrix = {{1d,0d,0d},{0d,Math.cos(-PhiAngle),-Math.sin(-PhiAngle)},{0d,Math.sin(-PhiAngle),Math.cos(-PhiAngle)}};
     	Double [] [] zRotationMatrix = {{Math.cos(-PsiAngle),-Math.sin(-PsiAngle),0d},{Math.sin(-PsiAngle),Math.cos(-PsiAngle),0d},{0d,0d,1d}};
-    	for(int i=0;i<aminoAcids.size();i++)
+    	for(int i=0;i<29;i++)
     	{
     		AminoAcid aa = aminoAcids.get(i);
     		Map<String, Vector> atoms = aa.getAtoms();
@@ -196,7 +196,25 @@ public class MainClass
     			String atomName = atom.getKey();
     			Vector atomVector = atom.getValue();
     			Vector afterRotation = Vector.multiplyVectorMatrix(xRotationMatrix,atomVector.toArray());
-    			afterRotation = Vector.multiplyVectorMatrix(zRotationMatrix, afterRotation.toArray());
+    			newAtoms.put(atomName, afterRotation);
+    		}
+    		AminoAcid newAA = aa;
+    		newAA.setAtoms(newAtoms);
+    		newAminoAcids.add(newAA);
+    	}
+    	
+    	newAminoAcids.add(aminoAcids.get(29));
+    	
+    	for(int i=30;i<aminoAcids.size();i++)
+    	{
+    		AminoAcid aa = aminoAcids.get(i);
+    		Map<String, Vector> atoms = aa.getAtoms();
+    		Map<String, Vector> newAtoms = new HashMap<String, Vector>();
+    		for(Entry<String, Vector> atom : atoms.entrySet())
+    		{
+    			String atomName = atom.getKey();
+    			Vector atomVector = atom.getValue();
+    			Vector afterRotation = Vector.multiplyVectorMatrix(zRotationMatrix, atomVector.toArray());
     			newAtoms.put(atomName, afterRotation);
     		}
     		AminoAcid newAA = aa;
@@ -206,7 +224,7 @@ public class MainClass
     	return newAminoAcids;
     }
     
-  //Question 4b:
+    //Question 4b:
     public static List<Object> minimumDistance(List<AminoAcid> rotatedAminoAcids)
     {
     	//Map<String, Double> atomsDistances = new HashMap<String, Double>();
