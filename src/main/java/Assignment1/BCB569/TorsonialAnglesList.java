@@ -5,13 +5,15 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 /**
- * 
- * @author Ashish Jain
+ * The Class TorsonialAnglesList.
  *
+ * @author Ashish Jain
  */
 public class TorsonialAnglesList {
 
+	/** The Constant chi_atoms. */
 	public static final Map<String, Map<String, List<String>>> chi_atoms;
 	static {
 		Map<String, Map<String, List<String>>> temp_hi_atoms = new HashMap<String, Map<String,List<String>>>();

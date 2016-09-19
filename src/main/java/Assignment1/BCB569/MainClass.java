@@ -13,13 +13,22 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * 
- * @author Ashish Jain
+ * The Class MainClass.
  *
+ * @author Ashish Jain
  */
 public class MainClass 
 {
+	
+	/** The atom names. */
 	public static List<String> atomNames = Arrays.asList("N","CA","C");
+    
+    /**
+     * The main method.
+     *
+     * @param args the arguments
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     public static void main( String[] args ) throws IOException
     {
     	if(args.length != 1)
@@ -39,7 +48,7 @@ public class MainClass
         List<AminoAcid> aminoAcids = new ArrayList<AminoAcid>();
         Map<String, Vector> atoms = new HashMap<String, Vector>();
         Map<String, Vector> aminoAcidBackbone = new HashMap<String, Vector>();
-        BufferedReader br = new BufferedReader(new FileReader("/home/jain/BitBucket_Code/2GB1.pdb"));
+        BufferedReader br = new BufferedReader(new FileReader("/Users/jain/Desktop/Assignment1/2GB1.pdb"));
         PrintWriter pw = new PrintWriter("output.txt");        
         String line = br.readLine();
         List<String> lineInPDBFile = new ArrayList<String>();
@@ -148,6 +157,12 @@ public class MainClass
         pw.close();
     }
     
+    /**
+     * Calculate mean and S dof angles.
+     *
+     * @param aminoAcids the amino acids
+     * @param pw the pw
+     */
     //Question 2:
     public static void CalculateMeanAndSDofAngles(List<AminoAcid> aminoAcids, PrintWriter pw)
     {
@@ -193,6 +208,14 @@ public class MainClass
     	pw.println("The Standard Deviation of of distance between CAi-CA(i+1) "+SDV(distanceCA));
     }
     
+    /**
+     * Rotation.
+     *
+     * @param aminoAcids the amino acids
+     * @param PhiAngle the phi angle
+     * @param PsiAngle the psi angle
+     * @return the list
+     */
     //Question 4a:
     public static List<AminoAcid> rotation(List<AminoAcid> aminoAcids,Double PhiAngle, Double PsiAngle)
     {
@@ -237,6 +260,12 @@ public class MainClass
     	return newAminoAcids;
     }
     
+    /**
+     * Minimum distance.
+     *
+     * @param rotatedAminoAcids the rotated amino acids
+     * @return the list
+     */
     //Question 4b:
     public static List<Object> minimumDistance(List<AminoAcid> rotatedAminoAcids)
     {
@@ -283,6 +312,12 @@ public class MainClass
     
     
     
+    /**
+     * Calculate side chain torsion angles.
+     *
+     * @param aminoAcids the amino acids
+     * @param pw the pw
+     */
     //Question 5:
     public static void calculateSideChainTorsionAngles(List<AminoAcid> aminoAcids,PrintWriter pw)
     {
@@ -307,6 +342,12 @@ public class MainClass
     	}
     }
     
+    /**
+     * Mean.
+     *
+     * @param list the list
+     * @return the double
+     */
     public static Double Mean(List<Double> list)
     {
     	Double sum = 0d;
@@ -317,6 +358,12 @@ public class MainClass
     	return sum/list.size();
     }
     
+    /**
+     * Sdv.
+     *
+     * @param list the list
+     * @return the double
+     */
     public static Double SDV(List<Double> list)
     {
         double num=0.0;
