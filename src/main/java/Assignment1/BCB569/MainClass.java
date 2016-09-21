@@ -48,8 +48,8 @@ public class MainClass
         List<AminoAcid> aminoAcids = new ArrayList<AminoAcid>();
         Map<String, Vector> atoms = new HashMap<String, Vector>();
         Map<String, Vector> aminoAcidBackbone = new HashMap<String, Vector>();
-        BufferedReader br = new BufferedReader(new FileReader("/Users/jain/Desktop/Assignment1/2GB1.pdb"));
-        PrintWriter pw = new PrintWriter("output.txt");        
+        BufferedReader br = new BufferedReader(new FileReader(args[0]));
+        PrintWriter pw = new PrintWriter("BCB3HW1Results.txt");        
         String line = br.readLine();
         List<String> lineInPDBFile = new ArrayList<String>();
         while(line != null)
@@ -221,7 +221,7 @@ public class MainClass
     public static List<AminoAcid> rotation(List<AminoAcid> aminoAcids,Double PhiAngle, Double PsiAngle)
     {
     	List<AminoAcid> newAminoAcids = new ArrayList<AminoAcid>();
-    	Double [][] newRotationMatrix = {{Math.cos(-PsiAngle),Math.sin(-PsiAngle),0d},{-Math.sin(-PsiAngle)*Math.cos(-PhiAngle),Math.cos(-PsiAngle)*Math.cos(-PhiAngle),-Math.sin(-PhiAngle)},{-Math.sin(-PsiAngle)*Math.sin(-PhiAngle),Math.sin(-PsiAngle)*Math.cos(-PhiAngle),Math.cos(-PhiAngle)}};
+    	//Double [][] newRotationMatrix = {{Math.cos(-PsiAngle),Math.sin(-PsiAngle),0d},{-Math.sin(-PsiAngle)*Math.cos(-PhiAngle),Math.cos(-PsiAngle)*Math.cos(-PhiAngle),-Math.sin(-PhiAngle)},{-Math.sin(-PsiAngle)*Math.sin(-PhiAngle),Math.sin(-PsiAngle)*Math.cos(-PhiAngle),Math.cos(-PhiAngle)}};
     	Double [] [] xRotationMatrix = {{1d,0d,0d},{0d,Math.cos(-PhiAngle),-Math.sin(-PhiAngle)},{0d,Math.sin(-PhiAngle),Math.cos(-PhiAngle)}};
     	//Double [] [] yRotationMatrix = {{Math.cos(-PhiAngle),0d,Math.sin(-PhiAngle)},{0d,1d,0d},{-Math.sin(-PhiAngle),0d,Math.cos(-PhiAngle)}};
     	//Double [] [] zRotationMatrix = {{Math.cos(-PhiAngle),-Math.sin(-PhiAngle),0d},{Math.sin(-PhiAngle),Math.cos(-PhiAngle),0d},{0d,0d,1d}};
@@ -235,7 +235,7 @@ public class MainClass
     		{
     			String atomName = atom.getKey();
     			Vector atomVector = atom.getValue();
-    			Vector afterRotation = Vector.multiplyVectorMatrix(newRotationMatrix,atomVector.toArray());
+    			Vector afterRotation = Vector.multiplyVectorMatrix(xRotationMatrix,atomVector.toArray());
     			//afterRotation = Vector.multiplyVectorMatrix(yRotationMatrix, afterRotation.toArray());
     			//afterRotation = Vector.multiplyVectorMatrix(zRotationMatrix, afterRotation.toArray());
     			newAtoms.put(atomName, afterRotation);
@@ -281,7 +281,7 @@ public class MainClass
     		{
     			String atomName = atom.getKey();
     			Vector atomVector = atom.getValue();
-    			Vector afterRotation = Vector.multiplyVectorMatrix(newRotationMatrix, atomVector.toArray());
+    			Vector afterRotation = Vector.multiplyVectorMatrix(zRotationMatrix1, atomVector.toArray());
     			//afterRotation = Vector.multiplyVectorMatrix(yRotationMatrix1, afterRotation.toArray());
     			//afterRotation = Vector.multiplyVectorMatrix(zRotationMatrix1, afterRotation.toArray());
     			newAtoms.put(atomName, afterRotation);
