@@ -92,6 +92,10 @@ public class Vector {
         return new Vector(x - v.x, y - v.y, z - v.z);
     }
 	
+	public Vector divide(double v) {
+        return new Vector(x/v, y/v, z/v);
+    }
+	
 	/**
 	 * To array.
 	 *
