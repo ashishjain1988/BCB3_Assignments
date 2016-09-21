@@ -221,11 +221,12 @@ public class MainClass
     public static List<AminoAcid> rotation(List<AminoAcid> aminoAcids,Double PhiAngle, Double PsiAngle)
     {
     	List<AminoAcid> newAminoAcids = new ArrayList<AminoAcid>();
+    	Double [][] newRotationMatrix = {{Math.cos(-PsiAngle),Math.sin(-PsiAngle),0d},{-Math.sin(-PsiAngle)*Math.cos(-PhiAngle),Math.cos(-PsiAngle)*Math.cos(-PhiAngle),-Math.sin(-PhiAngle)},{-Math.sin(-PsiAngle)*Math.sin(-PhiAngle),Math.sin(-PsiAngle)*Math.cos(-PhiAngle),Math.cos(-PhiAngle)}};
     	Double [] [] xRotationMatrix = {{1d,0d,0d},{0d,Math.cos(-PhiAngle),-Math.sin(-PhiAngle)},{0d,Math.sin(-PhiAngle),Math.cos(-PhiAngle)}};
     	//Double [] [] yRotationMatrix = {{Math.cos(-PhiAngle),0d,Math.sin(-PhiAngle)},{0d,1d,0d},{-Math.sin(-PhiAngle),0d,Math.cos(-PhiAngle)}};
     	//Double [] [] zRotationMatrix = {{Math.cos(-PhiAngle),-Math.sin(-PhiAngle),0d},{Math.sin(-PhiAngle),Math.cos(-PhiAngle),0d},{0d,0d,1d}};
     	
-    	for(int i=0;i<29;i++)
+    	for(int i=0;i<30;i++)
     	{
     		AminoAcid aa = aminoAcids.get(i);
     		Map<String, Vector> atoms = aa.getAtoms();
@@ -234,7 +235,7 @@ public class MainClass
     		{
     			String atomName = atom.getKey();
     			Vector atomVector = atom.getValue();
-    			Vector afterRotation = Vector.multiplyVectorMatrix(xRotationMatrix,atomVector.toArray());
+    			Vector afterRotation = Vector.multiplyVectorMatrix(newRotationMatrix,atomVector.toArray());
     			//afterRotation = Vector.multiplyVectorMatrix(yRotationMatrix, afterRotation.toArray());
     			//afterRotation = Vector.multiplyVectorMatrix(zRotationMatrix, afterRotation.toArray());
     			newAtoms.put(atomName, afterRotation);
@@ -265,7 +266,7 @@ public class MainClass
 		AminoAcid newAA1 = aa1;
 		newAA1.setAtoms(newAtoms1);
 		newAminoAcids.add(newAA1);*/
-    	newAminoAcids.add(aminoAcids.get(29));
+    	//newAminoAcids.add(aminoAcids.get(29));
     	
     	//Double [] [] xRotationMatrix1 = {{1d,0d,0d},{0d,Math.cos(-PsiAngle),-Math.sin(-PsiAngle)},{0d,Math.sin(-PsiAngle),Math.cos(-PsiAngle)}};
     	//Double [] [] yRotationMatrix1 = {{Math.cos(-PsiAngle),0d,Math.sin(-PsiAngle)},{0d,1d,0d},{-Math.sin(-PsiAngle),0d,Math.cos(-PsiAngle)}};
@@ -280,7 +281,7 @@ public class MainClass
     		{
     			String atomName = atom.getKey();
     			Vector atomVector = atom.getValue();
-    			Vector afterRotation = Vector.multiplyVectorMatrix(zRotationMatrix1, atomVector.toArray());
+    			Vector afterRotation = Vector.multiplyVectorMatrix(newRotationMatrix, atomVector.toArray());
     			//afterRotation = Vector.multiplyVectorMatrix(yRotationMatrix1, afterRotation.toArray());
     			//afterRotation = Vector.multiplyVectorMatrix(zRotationMatrix1, afterRotation.toArray());
     			newAtoms.put(atomName, afterRotation);
