@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import Assignment2.BCB569.Atom;
+
 /**
  * The Class AminoAcid.
  *
@@ -34,7 +36,7 @@ public class AminoAcid implements Comparable<AminoAcid>{
 	Vector backboneC;
 	
 	/** The atoms. */
-	Map<String, Vector> atoms;
+	Map<String, Atom> atoms;
 	
 	/**
 	 * Gets the r sequence.
@@ -149,7 +151,7 @@ public class AminoAcid implements Comparable<AminoAcid>{
 	 *
 	 * @return the atoms
 	 */
-	public Map<String, Vector> getAtoms() {
+	public Map<String, Atom> getAtoms() {
 		return atoms;
 	}
 	
@@ -158,7 +160,7 @@ public class AminoAcid implements Comparable<AminoAcid>{
 	 *
 	 * @param atoms the atoms
 	 */
-	public void setAtoms(Map<String, Vector> atoms) {
+	public void setAtoms(Map<String, Atom> atoms) {
 		this.atoms = atoms;
 	}
 
@@ -221,7 +223,7 @@ public class AminoAcid implements Comparable<AminoAcid>{
 	 * @param atoms the atoms
 	 */
 	public AminoAcid(String rSequence, String rChain, String rName, String elementSymbol, Vector backboneN,
-			Vector backboneCA, Vector backboneC, Map<String, Vector> atoms) {
+			Vector backboneCA, Vector backboneC, Map<String, Atom> atoms) {
 		super();
 		this.rSequence = rSequence;
 		this.rChain = rChain;
@@ -284,15 +286,15 @@ public class AminoAcid implements Comparable<AminoAcid>{
     	Double distance = 1000d;
     	String atomsName = "";
     	List<Object> result =  new ArrayList<Object>();
-		Map<String, Vector> atoms1 = aa1.getAtoms();
-		Map<String, Vector> atoms2 = aa2.getAtoms();
-		for(Entry<String, Vector> entry1 : atoms1.entrySet())
+		Map<String, Atom> atoms1 = aa1.getAtoms();
+		Map<String, Atom> atoms2 = aa2.getAtoms();
+		for(Entry<String, Atom> entry1 : atoms1.entrySet())
 		{
-			for(Entry<String, Vector> entry2 : atoms2.entrySet())
+			for(Entry<String, Atom> entry2 : atoms2.entrySet())
 			{
 				if((!entry1.getKey().equals(entry2.getKey()) || isSame == false) && (!entry1.getKey().startsWith("H") && !entry2.getKey().startsWith("H")))
 				{
-					Double dist = entry1.getValue().distance(entry2.getValue());
+					Double dist = entry1.getValue().getPosition().distance(entry2.getValue().getPosition());
 					if(dist < distance)
 					{
 						distance = dist;

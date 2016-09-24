@@ -96,6 +96,14 @@ public class Vector {
         return new Vector(x/v, y/v, z/v);
     }
 	
+	public Vector multiply(double v) {
+        return new Vector(x*v, y*v, z*v);
+    }
+	
+	public Vector add(Vector v) {
+        return new Vector(x + v.x, y + v.y, z + v.z);
+    }
+	
 	/**
 	 * To array.
 	 *

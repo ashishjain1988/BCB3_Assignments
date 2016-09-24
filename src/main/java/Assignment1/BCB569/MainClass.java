@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import Assignment2.BCB569.Atom;
+
 /**
  * The Class MainClass.
  *
@@ -46,7 +48,7 @@ public class MainClass
     	String rName, rChain, rSequence;
     	rName = rChain = rSequence = "";
         List<AminoAcid> aminoAcids = new ArrayList<AminoAcid>();
-        Map<String, Vector> atoms = new HashMap<String, Vector>();
+        Map<String, Atom> atoms = new HashMap<String, Atom>();
         Map<String, Vector> aminoAcidBackbone = new HashMap<String, Vector>();
         BufferedReader br = new BufferedReader(new FileReader(args[0]));
         PrintWriter pw = new PrintWriter("BCB3HW1Results.txt");        
@@ -73,6 +75,7 @@ public class MainClass
         		String resName = line.substring(17,20).trim();
         		String resChain = line.substring(21,22).trim();
         		String resSequence = line.substring(22,26).trim();
+        		Integer atomicNumber = Integer.parseInt(line.substring(6,11).trim());
         		Vector coordinate = new Vector(Double.valueOf(line.substring(31,38).trim()), Double.valueOf(line.substring(38,46).trim()), Double.valueOf(line.substring(46,54).trim()));
         		
         		//Condition for first residue
@@ -90,7 +93,7 @@ public class MainClass
         				{
         					aminoAcids.add(new AminoAcid(rSequence, rChain, rName, elementSymbol,aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C"),atoms));
         					aminoAcidBackbone = new HashMap<String, Vector>();
-        					atoms = new HashMap<String, Vector>();
+        					atoms = new HashMap<String, Atom>();
         				}
         			}
         			rName = resName;
@@ -107,7 +110,7 @@ public class MainClass
         		
         		//if(!elementSymbol.equals("H"))
         		//{
-        			atoms.put(atomName, coordinate);
+        			atoms.put(atomName, new Atom(coordinate,null,atomicNumber));
         		//}
         		
         		//Store last Residue
@@ -141,7 +144,7 @@ public class MainClass
         		String atomName = line.substring(12,16).trim();
         		String resSequence = line.substring(22,26).trim();
         		AminoAcid aminoAcid =rotatedAminoAcids.get(Integer.parseInt(resSequence)-1);
-        		Vector vector = aminoAcid.getAtoms().get(atomName);
+        		Vector vector = aminoAcid.getAtoms().get(atomName).getPosition();
         		line = line.replace(line.substring(31,38).trim(), String.format( "%.3f", vector.getX()));
         		line = line.replace(line.substring(38,46).trim(), String.format( "%.3f", vector.getY()));
         		line = line.replace(line.substring(46,54).trim(), String.format( "%.3f", vector.getZ()));
@@ -229,16 +232,16 @@ public class MainClass
     	for(int i=0;i<30;i++)
     	{
     		AminoAcid aa = aminoAcids.get(i);
-    		Map<String, Vector> atoms = aa.getAtoms();
-    		Map<String, Vector> newAtoms = new HashMap<String, Vector>();
-    		for(Entry<String, Vector> atom : atoms.entrySet())
+    		Map<String, Atom> atoms = aa.getAtoms();
+    		Map<String, Atom> newAtoms = new HashMap<String, Atom>();
+    		for(Entry<String, Atom> atom : atoms.entrySet())
     		{
     			String atomName = atom.getKey();
-    			Vector atomVector = atom.getValue();
+    			Vector atomVector = atom.getValue().getPosition();
     			Vector afterRotation = Vector.multiplyVectorMatrix(xRotationMatrix,atomVector.toArray());
     			//afterRotation = Vector.multiplyVectorMatrix(yRotationMatrix, afterRotation.toArray());
     			//afterRotation = Vector.multiplyVectorMatrix(zRotationMatrix, afterRotation.toArray());
-    			newAtoms.put(atomName, afterRotation);
+    			newAtoms.put(atomName, new Atom(afterRotation,null,atom.getValue().getAtomicNumber()));
     		}
     		AminoAcid newAA = aa;
     		newAA.setAtoms(newAtoms);
@@ -275,16 +278,16 @@ public class MainClass
     	for(int i=30;i<aminoAcids.size();i++)
     	{
     		AminoAcid aa = aminoAcids.get(i);
-    		Map<String, Vector> atoms = aa.getAtoms();
-    		Map<String, Vector> newAtoms = new HashMap<String, Vector>();
-    		for(Entry<String, Vector> atom : atoms.entrySet())
+    		Map<String, Atom> atoms = aa.getAtoms();
+    		Map<String, Atom> newAtoms = new HashMap<String, Atom>();
+    		for(Entry<String, Atom> atom : atoms.entrySet())
     		{
     			String atomName = atom.getKey();
-    			Vector atomVector = atom.getValue();
+    			Vector atomVector = atom.getValue().getPosition();
     			Vector afterRotation = Vector.multiplyVectorMatrix(zRotationMatrix1, atomVector.toArray());
     			//afterRotation = Vector.multiplyVectorMatrix(yRotationMatrix1, afterRotation.toArray());
     			//afterRotation = Vector.multiplyVectorMatrix(zRotationMatrix1, afterRotation.toArray());
-    			newAtoms.put(atomName, afterRotation);
+    			newAtoms.put(atomName, new Atom(afterRotation, null, atom.getValue().getAtomicNumber()));
     		}
     		AminoAcid newAA = aa;
     		newAA.setAtoms(newAtoms);
@@ -359,7 +362,7 @@ public class MainClass
     	{
     		String residueName = aminoAcid.getrName();
     		//System.out.println(residueName);
-    		Map<String, Vector> atoms = aminoAcid.getAtoms();
+    		Map<String, Atom> atoms = aminoAcid.getAtoms();
     		for(Entry<String, Map<String, List<String>>> chi_atom_entry: TorsonialAnglesList.chi_atoms.entrySet())
     		{
     			String angleName = chi_atom_entry.getKey();
@@ -368,7 +371,7 @@ public class MainClass
     				List<String> angleAtoms = chi_atom_entry.getValue().get(residueName);
     				//System.out.println(angleName+", "+residueName);
     				//System.out.println(atoms.get(angleAtoms.get(0))+","+atoms.get(angleAtoms.get(1))+","+atoms.get(angleAtoms.get(2))+","+atoms.get(angleAtoms.get(3)));
-    				Double torsionalAngle = Vector.getTorsionalAngle(atoms.get(angleAtoms.get(0)), atoms.get(angleAtoms.get(1)), atoms.get(angleAtoms.get(2)), atoms.get(angleAtoms.get(3)));
+    				Double torsionalAngle = Vector.getTorsionalAngle(atoms.get(angleAtoms.get(0)).getPosition(), atoms.get(angleAtoms.get(1)).getPosition(), atoms.get(angleAtoms.get(2)).getPosition(), atoms.get(angleAtoms.get(3)).getPosition());
     				pw.println(residueName+"\t"+aminoAcid.getrChain()+"\t"+aminoAcid.getrSequence()+"\t"+angleName+"\t"+torsionalAngle);
     			}
     		}
