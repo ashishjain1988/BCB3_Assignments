@@ -57,8 +57,6 @@ public class MainClass {
         }
         br.close();
         line = "";
-        //pw.println("Question 1:");
-        //pw.println("Residue Sequence\tAtom Name\tCoordinate X\tCoordinate Y\tCoordinate Z");
         for(int i=0;i<lineInPDBFile.size();i++)
         {
         	line = lineInPDBFile.get(i);
@@ -73,14 +71,14 @@ public class MainClass {
         		String resSequence = line.substring(22,26).trim();
         		Integer atomicNumber = Integer.parseInt(line.substring(6,11).trim());
         		Vector coordinate = new Vector(Double.valueOf(line.substring(31,38).trim()), Double.valueOf(line.substring(38,46).trim()), Double.valueOf(line.substring(46,54).trim()));
-        		
+
         		//Condition for first residue
         		if((rName.equals("") && rChain.equals("") && rSequence.equals("")))
         		{
         			rName = resName;
         			rChain = resChain;
         			rSequence = resSequence;
-        		
+
         		}else if(!(resName.equals(rName) && resChain.equals(rChain) && resSequence.equals(rSequence)))
         		{
         			if(aminoAcidBackbone.size() == 3)
@@ -96,19 +94,15 @@ public class MainClass {
         			rChain = resChain;
         			rSequence = resSequence;
         		}
-        		
-        		//Question 1:
+
         		if(Assignment1.BCB569.MainClass.atomNames.contains(atomName))
         		{
         			aminoAcidBackbone.put(atomName, coordinate);
         		}
-        		
-        		//if(!elementSymbol.equals("H"))
-        		//{
-        			atoms.put(atomName, new Atom(coordinate,null,atomicNumber));
-        			atomByPosition.add(new Atom(atomName,coordinate,atomradii.get(elementSymbol),atomicNumber,null));
-        		//}
-        		
+
+        		atoms.put(atomName, new Atom(coordinate,null,atomicNumber));
+        		atomByPosition.add(new Atom(atomName,coordinate,atomradii.get(elementSymbol),atomicNumber,null));
+
         		//Store last Residue
         		if(!recordTypeNext.equals("ATOM"))
         		{
@@ -143,20 +137,12 @@ public class MainClass {
 	
 	public static List<Atom> CalculateSolventAccessibleArea(List<Atom> atomByPosition,Double probeRadii,Integer numberOfPoints, PrintWriter pw)
 	{
-		//Map<Integer, Double> areaOfAtoms
 		List<Vector> spherePoints = generateSpherePoints(numberOfPoints);
 		Double constant = 4.0 * Math.PI / spherePoints.size();
 		for(int i=0;i<atomByPosition.size();i++)
 		{
-			//System.out.println(i);
 			Atom atomI = atomByPosition.get(i);
-			//String atomName = atom
 			List<Integer> neighborAtomsPositions = findNeighborIndices(atomByPosition,probeRadii, i);
-			/*if(i ==0)
-			{
-				System.out.println(neighborAtomsPositions.toString());
-			}*/
-			//n_neighbor = len(neighbor_indices)
 			Integer j_closest_neighbor = 0;
 			Double radius = probeRadii + atomI.getAtomicRadii();
 			Integer n_accessible_point = 0;
@@ -164,17 +150,10 @@ public class MainClass {
 			{
 			    boolean is_accessible = true;
 			    Vector test_point = point.multiply(radius).add(atomI.getPosition());
-			    //cycled_indices = range(j_closest_neighbor, n_neighbor)
-			    //        cycled_indices.extend(range(j_closest_neighbor))
 			    List<Integer> cycledIndex = range(j_closest_neighbor, neighborAtomsPositions.size());
 			    cycledIndex.addAll(range(0,j_closest_neighbor));
-			    if(i==0)
-			    {
-			    	//System.out.println(cycledIndex);
-			    }
 			    for(Integer j : cycledIndex)
 			    {
-			    	//System.out.println(neighborAtomsPositions.get(j));
 			    	Atom atom2 = atomByPosition.get(neighborAtomsPositions.get(j));
 			    	Double r = atom2.getAtomicRadii() + probeRadii;
 			    	Double diff = atom2.getPosition().subtract(test_point).length();
@@ -193,8 +172,6 @@ public class MainClass {
 			}
 			Double area = constant * n_accessible_point * Math.pow(radius, 2);
 			atomI.setArea(area);
-			//atomByPosition.add(i, atomI);
-			//System.out.println(atomI.getAtomicNumber()+"\t"+area);
 		}
 		return atomByPosition;
 	}
@@ -218,9 +195,7 @@ public class MainClass {
 	public static List<Integer> findNeighborIndices(List<Atom> atomByPosition,Double probeRadii,Integer atomPosition)
 	{
 		List<Integer> neighborAtomsPositions = new ArrayList<Integer>();
-		//System.out.println(atomPosition);
 		Atom atom = atomByPosition.get(atomPosition);
-		//System.out.println(atom.getAtomicRadii());
 		Double radius = atom.getAtomicRadii() + probeRadii + probeRadii;
 		for(int i=0;i<atomByPosition.size();i++)
 		{
@@ -233,7 +208,6 @@ public class MainClass {
 					neighborAtomsPositions.add(i);
 				}
 			}
-
 		}
 		return neighborAtomsPositions;
 
@@ -242,11 +216,9 @@ public class MainClass {
 	public static List<Integer> range(Integer start, Integer stop)
 	{
 		List<Integer> result = new ArrayList<Integer>();
-
-	   for(int i=0;i<stop-start;i++)
-	      result.add(start+i);
-
-	   return result;
+		for(int i=0;i<stop-start;i++)
+			result.add(start+i);
+		return result;
 	}
 	
 }
