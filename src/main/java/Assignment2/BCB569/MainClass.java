@@ -143,34 +143,34 @@ public class MainClass {
 		{
 			Atom atomI = atomByPosition.get(i);
 			List<Integer> neighborAtomsPositions = findNeighborIndices(atomByPosition,probeRadii, i);
-			Integer j_closest_neighbor = 0;
+			Integer tempClosestNeighbor = 0;
 			Double radius = probeRadii + atomI.getAtomicRadii();
-			Integer n_accessible_point = 0;
+			Integer tempNumberOfAccessiblePoints = 0;
 			for(Vector point : spherePoints)
 			{
-			    boolean is_accessible = true;
-			    Vector test_point = point.multiply(radius).add(atomI.getPosition());
-			    List<Integer> cycledIndex = range(j_closest_neighbor, neighborAtomsPositions.size());
-			    cycledIndex.addAll(range(0,j_closest_neighbor));
+			    boolean isAccessible = true;
+			    Vector testPoint = point.multiply(radius).add(atomI.getPosition());
+			    List<Integer> cycledIndex = range(tempClosestNeighbor, neighborAtomsPositions.size());
+			    cycledIndex.addAll(range(0,tempClosestNeighbor));
 			    for(Integer j : cycledIndex)
 			    {
 			    	Atom atom2 = atomByPosition.get(neighborAtomsPositions.get(j));
 			    	Double r = atom2.getAtomicRadii() + probeRadii;
-			    	Double diff = atom2.getPosition().subtract(test_point).length();
+			    	Double diff = atom2.getPosition().subtract(testPoint).length();
 			    	if(Math.pow(diff, 2) < Math.pow(r, 2))
 			    	{
-			    		j_closest_neighbor = j;
-			    		is_accessible = false;
+			    		tempClosestNeighbor = j;
+			    		isAccessible = false;
 			    		break;
 			    	}
 			    	
 			    }
-			    if(is_accessible)
+			    if(isAccessible)
 			    {
-			    	n_accessible_point += 1;
+			    	tempNumberOfAccessiblePoints += 1;
 			    }
 			}
-			Double area = constant * n_accessible_point * Math.pow(radius, 2);
+			Double area = constant * tempNumberOfAccessiblePoints * Math.pow(radius, 2);
 			atomI.setArea(area);
 		}
 		return atomByPosition;
@@ -182,11 +182,11 @@ public class MainClass {
 		List<Vector> points = new ArrayList<Vector>();
 		Double u = Math.PI * (3 - Math.sqrt(5));
 		Double v = 2d /numberOfPoints;
-		for(int k = 0;k<numberOfPoints;k++)
+		for(int i = 0;i<numberOfPoints;i++)
 		{
-			Double y = k * v - 1 + (v / 2);
+			Double y = i * v - 1 + (v / 2);
 			Double r = Math.sqrt(1 - y*y);
-			Double phi = k * u;
+			Double phi = i * u;
 			points.add(new Vector(Math.cos(phi)*r, y, Math.sin(phi)*r));
 		}
 		return points;
