@@ -13,9 +13,14 @@ import java.util.Map.Entry;
 
 import Assignment1.BCB569.AminoAcid;
 import Assignment1.BCB569.Vector;
-
+/**
+ * @author Ashish Jain
+ * 
+ * The Class MainClass.
+ */
 public class MainClass {
 
+	/** The atomradii. */
 	public static Map<String,Double> atomradii;
 	static {
 		atomradii = new HashMap<String, Double>();
@@ -27,6 +32,12 @@ public class MainClass {
 		
 	}
 	
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void main(String[] args) throws IOException{
     	if(args.length != 1)
     	{
@@ -83,12 +94,9 @@ public class MainClass {
         		{
         			if(aminoAcidBackbone.size() == 3)
         			{
-        				//if(!aminoAcids.contains(new AminoAcid(rSequence, rChain, rName, aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C"))))
-        				{
-        					aminoAcids.add(new AminoAcid(rSequence, rChain, rName, elementSymbol,aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C"),atoms));
-        					aminoAcidBackbone = new HashMap<String, Vector>();
-        					atoms = new HashMap<String, Atom>();
-        				}
+        				aminoAcids.add(new AminoAcid(rSequence, rChain, rName, elementSymbol,aminoAcidBackbone.get("N"), aminoAcidBackbone.get("CA"), aminoAcidBackbone.get("C"),atoms));
+        				aminoAcidBackbone = new HashMap<String, Vector>();
+        				atoms = new HashMap<String, Atom>();
         			}
         			rName = resName;
         			rChain = resChain;
@@ -135,6 +143,15 @@ public class MainClass {
         
     }
 	
+	/**
+	 * Calculate solvent accessible area.
+	 *
+	 * @param atomByPosition the atom by position
+	 * @param probeRadii the probe radii
+	 * @param numberOfPoints the number of points
+	 * @param pw the pw
+	 * @return the list
+	 */
 	public static List<Atom> CalculateSolventAccessibleArea(List<Atom> atomByPosition,Double probeRadii,Integer numberOfPoints, PrintWriter pw)
 	{
 		List<Vector> spherePoints = generateSpherePoints(numberOfPoints);
@@ -177,6 +194,12 @@ public class MainClass {
 	}
 	
 	
+	/**
+	 * Generate sphere points.
+	 *
+	 * @param numberOfPoints the number of points
+	 * @return the list
+	 */
 	public static List<Vector> generateSpherePoints(Integer numberOfPoints)
 	{
 		List<Vector> points = new ArrayList<Vector>();
@@ -192,6 +215,14 @@ public class MainClass {
 		return points;
 	}
 	
+	/**
+	 * Find neighbor indices.
+	 *
+	 * @param atomByPosition the atom by position
+	 * @param probeRadii the probe radii
+	 * @param atomPosition the atom position
+	 * @return the list
+	 */
 	public static List<Integer> findNeighborIndices(List<Atom> atomByPosition,Double probeRadii,Integer atomPosition)
 	{
 		List<Integer> neighborAtomsPositions = new ArrayList<Integer>();
@@ -213,6 +244,13 @@ public class MainClass {
 
 	}
 	
+	/**
+	 * Range.
+	 *
+	 * @param start the start
+	 * @param stop the stop
+	 * @return the list
+	 */
 	public static List<Integer> range(Integer start, Integer stop)
 	{
 		List<Integer> result = new ArrayList<Integer>();
