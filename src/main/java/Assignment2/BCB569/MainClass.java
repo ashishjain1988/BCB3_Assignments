@@ -57,7 +57,7 @@ public class MainClass {
         Map<String, Atom> atoms = new HashMap<String, Atom>();
         Map<String, Vector> aminoAcidBackbone = new HashMap<String, Vector>();
         BufferedReader br = new BufferedReader(new FileReader(args[0]));
-        PrintWriter pw = new PrintWriter("BCB3HW2Results.txt");        
+        PrintWriter pw = new PrintWriter("2GB1-SASA.txt");        
         String line = br.readLine();
         List<String> lineInPDBFile = new ArrayList<String>();
         List<Atom> atomByPosition = new ArrayList<Atom>();
