@@ -30,7 +30,7 @@
   <configuration>
     <archive>
       <manifest>
-        <mainClass>Assignment1.BCB569.MainClass</mainClass>
+        <mainClass>Assignment2.BCB569.MainClass</mainClass>
       </manifest>
     </archive>
     <descriptorRefs>
@@ -54,7 +54,7 @@
             <configuration>
                 <archive>
                     <manifest>
-                        <mainClass>Assignment1.BCB569.MainClass</mainClass>
+                        <mainClass>Assignment2.BCB569.MainClass</mainClass>
                     </manifest>
                 </archive>
             </configuration>
